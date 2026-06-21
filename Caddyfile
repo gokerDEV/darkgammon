@@ -1,0 +1,4 @@
+dev.tavla.be {
+    reverse_proxy localhost:3000
+    tls ./dev.tavla.be.pem ./dev.tavla.be-key.pem
+}
