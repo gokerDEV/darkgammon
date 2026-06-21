@@ -17,6 +17,10 @@ interface PublicProfile {
   qrToken: string;
   // biome-ignore lint/suspicious/noExplicitAny: Complex structure
   lastGames?: any[];
+  stats?: {
+    light: { total: number; wins: number; losses: number };
+    dark: { total: number; wins: number; losses: number };
+  };
 }
 
 export function PublicProfileView({
@@ -147,6 +151,36 @@ export function PublicProfileView({
           )}
         </Button>
 
+        {profile.stats &&
+          (profile.stats.light.total > 0 || profile.stats.dark.total > 0) && (
+            <div className="w-full mt-4 flex flex-col gap-3 text-sm">
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider text-left">
+                Battle Statistics
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center">
+                  <span className="font-bold text-white mb-1">LIGHT</span>
+                  <span className="text-xs text-muted-foreground">
+                    {profile.stats.light.total} Battles
+                  </span>
+                  <span className="text-xs text-green-400 font-medium">
+                    {profile.stats.light.wins} W / {profile.stats.light.losses}{" "}
+                    L
+                  </span>
+                </div>
+                <div className="bg-black/20 border border-white/5 rounded-xl p-3 flex flex-col items-center">
+                  <span className="font-bold text-neutral-400 mb-1">DARK</span>
+                  <span className="text-xs text-muted-foreground">
+                    {profile.stats.dark.total} Battles
+                  </span>
+                  <span className="text-xs text-green-400 font-medium">
+                    {profile.stats.dark.wins} W / {profile.stats.dark.losses} L
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
         {profile.lastGames && profile.lastGames.length > 0 && (
           <div className="w-full mt-4 flex flex-col gap-2">
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2 text-left">
@@ -156,7 +190,19 @@ export function PublicProfileView({
             {profile.lastGames.map((game: any) => {
               const isHost = game.host?.profileId === profile._id;
               const opponent = isHost ? game.player : game.host;
-              const isWinner = game.winnerProfileId === profile._id;
+
+              const mySide = isHost
+                ? game.hostSide || "light"
+                : game.playerSide || "light";
+              const myColor = isHost
+                ? mySide === "light"
+                  ? "white"
+                  : "black"
+                : mySide === "light"
+                  ? "white"
+                  : "black";
+
+              const isWinner = game.state?.winner === myColor;
 
               if (!opponent) return null;
 
@@ -164,18 +210,22 @@ export function PublicProfileView({
               const opNickname = opponent.nickname || opponent.displayName;
               const mySmile = isWinner ? "=)" : "=(";
               const opSmile = isWinner ? "=(" : "=)";
-              const myColor = isWinner ? "text-green-500" : "text-red-500";
-              const opColor = isWinner ? "text-red-500" : "text-green-500";
+              const myColorText = isWinner ? "text-green-500" : "text-red-500";
+              const opColorText = isWinner ? "text-red-500" : "text-green-500";
 
-              const myRingColor = isHost ? "border-white" : "border-black";
-              const opRingColor = isHost ? "border-black" : "border-white";
+              const myRingColor =
+                mySide === "light" ? "border-white" : "border-black/50";
+              const opRingColor =
+                mySide === "light" ? "border-black/50" : "border-white";
 
-              const myCount = isHost
-                ? game.state?.off?.white || 0
-                : game.state?.off?.black || 0;
-              const opCount = isHost
-                ? game.state?.off?.black || 0
-                : game.state?.off?.white || 0;
+              const myCount =
+                myColor === "white"
+                  ? game.state?.off?.white || 0
+                  : game.state?.off?.black || 0;
+              const opCount =
+                myColor === "white"
+                  ? game.state?.off?.black || 0
+                  : game.state?.off?.white || 0;
 
               return (
                 <div
@@ -201,7 +251,7 @@ export function PublicProfileView({
                       </span>
                     </div>
                     <span
-                      className={`inline-block rotate-[60deg] font-bold ${myColor} ml-1 shrink-0`}
+                      className={`inline-block rotate-[60deg] font-bold ${myColorText} ml-1 shrink-0`}
                     >
                       {mySmile}
                     </span>
@@ -213,7 +263,7 @@ export function PublicProfileView({
 
                   <div className="flex items-center gap-2 flex-1 justify-between min-w-0">
                     <span
-                      className={`inline-block rotate-[60deg] font-bold ${opColor} mr-1 shrink-0`}
+                      className={`inline-block rotate-[60deg] font-bold ${opColorText} mr-1 shrink-0`}
                     >
                       {opSmile}
                     </span>

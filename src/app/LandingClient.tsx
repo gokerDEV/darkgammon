@@ -35,19 +35,19 @@ export default function LandingClient({
   }
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center p-4">
       <div className="w-full max-w-sm flex flex-col gap-6">
         <header className="text-center">
           <h1 className="text-4xl font-black tracking-tight uppercase tracking-widest">
             {DARKGAMMON_COPY.brand.name}
           </h1>
-          <p className="mt-2 text-lg text-white/70 font-medium group cursor-default w-fit mx-auto">
+          <p className="mt-2 text-lg text-muted-foreground font-medium group cursor-default w-fit mx-auto">
             {DARKGAMMON_COPY.brand.supportCopy}
           </p>
         </header>
 
-        <div className="bg-white/5 rounded-2xl p-5 flex flex-col gap-4 border border-white/10 text-center">
-          <h2 className="text-xl font-bold text-white mb-2">
+        <div className="bg-card text-card-foreground shadow-sm rounded-2xl p-5 flex flex-col gap-4 border text-center">
+          <h2 className="text-xl font-bold mb-2">
             Welcome, {String(profile.displayName)}!
           </h2>
 
@@ -55,7 +55,7 @@ export default function LandingClient({
             size="lg"
             disabled={creating}
             onClick={onCreate}
-            className="group bg-indigo-500 hover:bg-indigo-400 text-white font-semibold"
+            className="group font-semibold"
           >
             {creating ? (
               "Creating..."
@@ -69,7 +69,7 @@ export default function LandingClient({
           <Link href="/profile" className="w-full">
             <Button
               variant="outline"
-              className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white border-none"
+              className="w-full border-none shadow-none bg-muted hover:bg-muted/80 text-muted-foreground"
             >
               Profile
             </Button>
@@ -78,7 +78,7 @@ export default function LandingClient({
           <Link href="/challenges" className="w-full">
             <Button
               variant="outline"
-              className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white border-none flex items-center justify-center gap-2"
+              className="w-full border-none shadow-none bg-muted hover:bg-muted/80 text-muted-foreground flex items-center justify-center gap-2"
             >
               <Inbox className="w-4 h-4 opacity-70" />
               Pending Challenges
@@ -88,29 +88,29 @@ export default function LandingClient({
           <Link href="/qr" className="flex-1">
             <Button
               variant="outline"
-              className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white shadow-lg shadow-black/20 h-12 text-base font-semibold"
+              className="w-full bg-muted hover:bg-muted/80 text-muted-foreground border-none h-12 text-base font-semibold shadow-sm"
             >
               <QrCode className="w-5 h-5 mr-2 opacity-70" />
               My QR Code
             </Button>
           </Link>
 
-          <div className="mt-4 border-t border-white/10 pt-4">
+          <div className="mt-4 border-t pt-4">
             <Button
               variant="ghost"
               onClick={() => signOut()}
-              className="w-full text-white/50 hover:text-white hover:bg-white/5"
+              className="w-full text-muted-foreground hover:text-foreground hover:bg-muted"
             >
               Sign Out
             </Button>
           </div>
         </div>
 
-        <p className="text-center text-white/60 mt-4">
+        <p className="text-center text-muted-foreground mt-4">
           Beta version. If you have feedback, reach out to{" "}
           <a
             href="https://x.com/gokerDEV/status/2063674093052813493"
-            className="underline hover:text-white"
+            className="underline hover:text-foreground"
           >
             @gokerDEV
           </a>

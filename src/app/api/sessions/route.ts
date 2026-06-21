@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getDb } from "@/lib/db/mongodb";
 import { startingState } from "@/lib/games/backgammon/engine";
+import { oppositeSide } from "@/lib/side";
 
 export async function POST(_req: NextRequest) {
   try {
@@ -31,6 +32,8 @@ export async function POST(_req: NextRequest) {
         challengeMessage: myProfile.challengeMessage,
         victoryGifUrl: myProfile.victoryGifUrl,
       },
+      hostSide: myProfile.side || "light",
+      playerSide: oppositeSide(myProfile.side || "light"),
       state: startingState(),
       createdAt: new Date(),
       updatedAt: new Date(),

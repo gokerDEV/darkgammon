@@ -25,13 +25,17 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { displayName, challengeMessage, victoryGifUrl } = body;
+    const { displayName, challengeMessage, victoryGifUrl, side } = body;
 
     if (!displayName) {
       return NextResponse.json(
         { error: "displayName is required" },
         { status: 400 },
       );
+    }
+
+    if (side !== undefined && side !== "light" && side !== "dark") {
+      return NextResponse.json({ error: "Invalid side" }, { status: 400 });
     }
 
     // Generate a unique handle based on display name
@@ -45,6 +49,7 @@ export async function POST(request: Request) {
       avatarUrl: session.user.image || "",
       challengeMessage: challengeMessage || "",
       victoryGifUrl: victoryGifUrl || "",
+      side: side || "light",
       qrToken: nanoid(12),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -70,13 +75,17 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
-    const { displayName, handle, challengeMessage, victoryGifUrl } = body;
+    const { displayName, handle, challengeMessage, victoryGifUrl, side } = body;
 
     if (!displayName || !handle) {
       return NextResponse.json(
         { error: "displayName and handle are required" },
         { status: 400 },
       );
+    }
+
+    if (side !== undefined && side !== "light" && side !== "dark") {
+      return NextResponse.json({ error: "Invalid side" }, { status: 400 });
     }
 
     const cleanHandle = handle.toLowerCase().replace(/[^a-z0-9\-_]/g, "");
@@ -110,6 +119,7 @@ export async function PUT(request: Request) {
           handle: cleanHandle,
           challengeMessage: challengeMessage || "",
           victoryGifUrl: victoryGifUrl || "",
+          side: side || "light",
           updatedAt: new Date(),
         },
       },

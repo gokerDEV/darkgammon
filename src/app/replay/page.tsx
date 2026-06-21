@@ -63,21 +63,39 @@ function ReplayContent() {
       const host = sessionData.host;
       const player = sessionData.player;
 
+      const hostPlaysWhite = sessionData.hostSide !== "dark";
+
       return {
         metadata: {
           winner: winnerColor,
-          whitePlayer: host.nickname || host.displayName || "Host",
-          whiteAvatarUrl: host.avatarUrl || "",
-          blackPlayer: player?.nickname || player?.displayName || "Player",
-          blackAvatarUrl: player?.avatarUrl || "",
-          whiteMessage: host.challengeMsg || "I am the host!",
-          blackMessage: player?.challengeMsg || "I am the player!",
-          whiteGif:
-            host.giphyUrl ||
-            "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif",
-          blackGif:
-            player?.giphyUrl ||
-            "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif",
+          whitePlayer: hostPlaysWhite
+            ? host.nickname || host.displayName || "Host"
+            : player?.nickname || player?.displayName || "Player",
+          whiteAvatarUrl: hostPlaysWhite
+            ? host.avatarUrl || ""
+            : player?.avatarUrl || "",
+          blackPlayer: !hostPlaysWhite
+            ? host.nickname || host.displayName || "Host"
+            : player?.nickname || player?.displayName || "Player",
+          blackAvatarUrl: !hostPlaysWhite
+            ? host.avatarUrl || ""
+            : player?.avatarUrl || "",
+          whiteMessage: hostPlaysWhite
+            ? host.challengeMsg || "I am the host!"
+            : player?.challengeMsg || "I am the player!",
+          blackMessage: !hostPlaysWhite
+            ? host.challengeMsg || "I am the host!"
+            : player?.challengeMsg || "I am the player!",
+          whiteGif: hostPlaysWhite
+            ? host.giphyUrl ||
+              "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif"
+            : player?.giphyUrl ||
+              "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif",
+          blackGif: !hostPlaysWhite
+            ? host.giphyUrl ||
+              "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif"
+            : player?.giphyUrl ||
+              "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif",
         },
         events: [],
         snapshots: snaps,

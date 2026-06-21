@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getDb } from "@/lib/db/mongodb";
 import { pusherTrigger } from "@/lib/realtime/pusher.server";
+import { oppositeSide } from "@/lib/side";
 
 export async function POST(
   req: NextRequest,
@@ -116,6 +117,8 @@ export async function POST(
           challengeMessage: myProfile.challengeMessage,
           victoryGifUrl: myProfile.victoryGifUrl,
         },
+        hostSide: targetProfile.side || "light",
+        playerSide: oppositeSide(targetProfile.side || "light"),
         state: startingState(),
         createdFromChallengeId: challenge._id,
         createdAt: new Date(),

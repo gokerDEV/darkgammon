@@ -28,7 +28,6 @@ import {
   rollDice,
 } from "@/lib/games/backgammon/engine";
 import type { BgSession, Color, Move } from "@/lib/games/backgammon/types";
-import { colorOf } from "@/lib/games/backgammon/types";
 import { relay } from "@/lib/games/tictactoe/session.functions";
 import { useLocalProfile } from "@/lib/profile/useLocalProfile";
 import { useChannel } from "@/lib/realtime/usePusher";
@@ -121,10 +120,14 @@ export default function BgPage() {
     return "open";
   }, [loaded, isHost, session, localUserId, profileId]);
 
-  const myColor: Color | null =
-    role === "host" || role === "player"
-      ? colorOf(role as "host" | "player")
-      : null;
+  const myColor: Color | null = useMemo(() => {
+    if (!session) return null;
+    if (role === "host")
+      return session.hostSide === "light" ? "white" : "black";
+    if (role === "player")
+      return session.playerSide === "light" ? "white" : "black";
+    return null;
+  }, [role, session]);
 
   const broadcast = useCallback(
     async (
@@ -654,7 +657,7 @@ export default function BgPage() {
               {/* 336x280 Large Rectangle Ad */}
               <AdSlot
                 className="w-[336px] h-[280px]"
-                label="Büyük Dikdörtgen (336x280)"
+                label="Large Rectangle (336x280)"
               />
             </div>
           </div>
@@ -751,7 +754,7 @@ function CenterMessage({ children }: { children: React.ReactNode }) {
         <div className="mt-6 w-full flex justify-center">
           <AdSlot
             className="w-[336px] h-[280px]"
-            label="Büyük Dikdörtgen (336x280)"
+            label="Large Rectangle (336x280)"
           />
         </div>
       </div>

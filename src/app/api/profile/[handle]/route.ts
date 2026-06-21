@@ -30,7 +30,38 @@ export async function GET(
       .limit(10)
       .toArray();
 
-    return NextResponse.json({ ...profile, lastGames });
+    const stats = {
+      light: { total: 0, wins: 0, losses: 0 },
+      dark: { total: 0, wins: 0, losses: 0 },
+    };
+
+    for (const game of lastGames) {
+      const isHost = game.host.profileId === profile._id.toString();
+      const mySide = isHost
+        ? game.hostSide || "light"
+        : game.playerSide || "light";
+      const myColor = isHost
+        ? mySide === "light"
+          ? "white"
+          : "black"
+        : mySide === "light"
+          ? "white"
+          : "black";
+
+      const won = game.state?.winner === myColor;
+
+      if (mySide === "light") {
+        stats.light.total++;
+        if (won) stats.light.wins++;
+        else stats.light.losses++;
+      } else {
+        stats.dark.total++;
+        if (won) stats.dark.wins++;
+        else stats.dark.losses++;
+      }
+    }
+
+    return NextResponse.json({ ...profile, lastGames, stats });
   } catch (error) {
     console.error("Fetch profile error", error);
     return NextResponse.json(

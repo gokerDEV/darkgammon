@@ -4,6 +4,7 @@ const USER_ID_KEY = "pwm:userId";
 const NICKNAME_KEY = "pwm:nickname";
 const CHALLENGE_MSG_KEY = "pwm:challengeMsg";
 const GIPHY_URL_KEY = "pwm:giphyUrl";
+const SIDE_KEY = "darkgammon:side";
 
 const DEFAULT_MESSAGES = [
   "You have no chance!",
@@ -29,9 +30,16 @@ function readProfile(): {
   nickname: string;
   challengeMsg: string;
   giphyUrl: string;
+  side: "light" | "dark";
 } {
   if (typeof window === "undefined")
-    return { localUserId: "", nickname: "", challengeMsg: "", giphyUrl: "" };
+    return {
+      localUserId: "",
+      nickname: "",
+      challengeMsg: "",
+      giphyUrl: "",
+      side: "light",
+    };
   let id = window.localStorage.getItem(USER_ID_KEY);
   if (!id) {
     id =
@@ -53,11 +61,17 @@ function readProfile(): {
     window.localStorage.setItem(GIPHY_URL_KEY, giphyUrl);
   }
 
+  let sideStr = window.localStorage.getItem(SIDE_KEY);
+  if (sideStr !== "light" && sideStr !== "dark") {
+    sideStr = "light";
+  }
+
   return {
     localUserId: id,
     nickname: window.localStorage.getItem(NICKNAME_KEY) ?? "",
     challengeMsg,
     giphyUrl,
+    side: sideStr as "light" | "dark",
   };
 }
 
@@ -68,18 +82,27 @@ export function useLocalProfile() {
     challengeMsg: "",
     giphyUrl: "",
     profileId: "",
+    side: "light" as "light" | "dark",
   });
 
   useEffect(() => {
     const p = readProfile();
     setProfile((prev) => ({ ...prev, ...p }));
 
+    const handleUpdate = () => {
+      const p = readProfile();
+      setProfile((prev) => ({ ...prev, ...p }));
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("profile-updated", handleUpdate);
+    }
+
     // Attempt to fetch real profile from backend
     fetch("/api/profile/me")
       .then((res) => res.json())
       .then((data) => {
         if (data.profile?._id) {
-          const { _id, displayName, challengeMessage, victoryGifUrl } =
+          const { _id, displayName, challengeMessage, victoryGifUrl, side } =
             data.profile;
 
           if (typeof window !== "undefined") {
@@ -89,6 +112,11 @@ export function useLocalProfile() {
               window.localStorage.setItem(CHALLENGE_MSG_KEY, challengeMessage);
             if (victoryGifUrl)
               window.localStorage.setItem(GIPHY_URL_KEY, victoryGifUrl);
+
+            if (side === "light" || side === "dark") {
+              window.localStorage.setItem(SIDE_KEY, side);
+              window.dispatchEvent(new Event("profile-updated"));
+            }
           }
 
           setProfile((prev) => ({
@@ -97,6 +125,7 @@ export function useLocalProfile() {
             nickname: displayName || prev.nickname,
             challengeMsg: challengeMessage || prev.challengeMsg,
             giphyUrl: victoryGifUrl || prev.giphyUrl,
+            side: side === "light" || side === "dark" ? side : prev.side,
           }));
         } else if (data.profile === null) {
           // Clear cached data from previous logins
@@ -104,6 +133,7 @@ export function useLocalProfile() {
             window.localStorage.removeItem(NICKNAME_KEY);
             window.localStorage.removeItem(CHALLENGE_MSG_KEY);
             window.localStorage.removeItem(GIPHY_URL_KEY);
+            window.localStorage.removeItem(SIDE_KEY);
           }
           setProfile((prev) => ({
             ...prev,
@@ -111,10 +141,17 @@ export function useLocalProfile() {
             nickname: "",
             challengeMsg: "",
             giphyUrl: "",
+            side: "light" as "light" | "dark",
           }));
         }
       })
       .catch(() => {});
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("profile-updated", handleUpdate);
+      }
+    };
   }, []);
 
   const setNickname = useCallback((nickname: string) => {
@@ -141,11 +178,20 @@ export function useLocalProfile() {
     setProfile((p) => ({ ...p, giphyUrl: trimmed }));
   }, []);
 
+  const setSide = useCallback((newSide: "light" | "dark") => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(SIDE_KEY, newSide);
+      window.dispatchEvent(new Event("profile-updated"));
+    }
+    setProfile((p) => ({ ...p, side: newSide }));
+  }, []);
+
   return {
     ...profile,
     setNickname,
     setChallengeMsg,
     setGiphyUrl,
+    setSide,
     ready: profile.localUserId !== "",
   };
 }

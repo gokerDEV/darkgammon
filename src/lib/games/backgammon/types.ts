@@ -33,16 +33,12 @@ export type BgSession = {
   _id: string;
   gameId: "backgammon";
   status: "created" | "playing" | "finished";
-  host: BgPlayer; // white
-  player?: BgPlayer; // black
+  host: BgPlayer;
+  player?: BgPlayer;
+  hostSide: "light" | "dark";
+  playerSide: "light" | "dark";
   state: BgState;
   createdAt: string;
   updatedAt: string;
   finishedAt?: string;
 };
-
-// host plays white, player plays black
-export const colorOf = (role: "host" | "player"): Color =>
-  role === "host" ? "white" : "black";
-export const roleOf = (color: Color): "host" | "player" =>
-  color === "white" ? "host" : "player";

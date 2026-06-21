@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { GlobalNotificationListener } from "@/components/notifications/GlobalNotificationListener";
+import { SideProvider } from "@/components/side/SideProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import { cn } from "@/lib/utils";
@@ -90,9 +91,11 @@ export default function RootLayout({
         ></script>
       </head>
       <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster position="top-center" richColors />
-        <GlobalNotificationListener />
+        <SideProvider>
+          {children}
+          <Toaster position="top-center" richColors />
+          <GlobalNotificationListener />
+        </SideProvider>
       </body>
     </html>
   );

@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useLocalProfile } from "@/lib/profile/useLocalProfile";
+import { oppositeSide } from "@/lib/side";
 
 type Profile = {
   _id: string;
   displayName: string;
   handle: string;
   avatarUrl?: string;
+  side?: "light" | "dark";
 };
 
 type Challenge = {
@@ -31,6 +34,7 @@ export default function ChallengesPage() {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const router = useRouter();
+  const { side: myLocalSide } = useLocalProfile();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: run once
   useEffect(() => {
@@ -93,14 +97,14 @@ export default function ChallengesPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-white flex flex-col items-center p-4">
+    <div className="min-h-screen w-full bg-background text-foreground flex flex-col items-center p-4">
       <div className="w-full max-w-md flex flex-col gap-6 pt-4">
         <header className="flex items-center gap-4 relative">
           <Link href="/">
             <Button
               variant="ghost"
               size="icon"
-              className="text-white/70 hover:text-white hover:bg-white/10 rounded-full"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-full"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -112,23 +116,23 @@ export default function ChallengesPage() {
 
         {loading ? (
           <div className="flex justify-center p-10">
-            <Loader2 className="animate-spin text-white/50" />
+            <Loader2 className="animate-spin text-muted-foreground" />
           </div>
         ) : (
           <div className="flex flex-col gap-8">
             {/* Gelen İstekler */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-2">
-                <h2 className="text-lg font-bold text-white/90">
+                <h2 className="text-lg font-bold">
                   Received Challenges
                 </h2>
-                <span className="text-xs text-white/50 bg-white/10 px-2 py-1 rounded-full">
+                <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
                   {received.length} / {limits.maxPendingReceived}
                 </span>
               </div>
 
               {received.length === 0 ? (
-                <div className="bg-white/5 rounded-2xl p-6 text-center text-white/40 text-sm border border-white/5">
+                <div className="bg-muted/50 rounded-2xl p-6 text-center text-muted-foreground text-sm border border-border">
                   No pending received challenges.
                 </div>
               ) : (
@@ -136,18 +140,41 @@ export default function ChallengesPage() {
                   {received.map((c) => (
                     <div
                       key={c._id}
-                      className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col gap-4"
+                      className="bg-card text-card-foreground shadow-sm border rounded-xl p-4 flex flex-col gap-4"
                     >
                       <div className="flex justify-between items-center">
                         <span className="font-semibold">
                           {c.fromProfile?.displayName || c.fromProfile?.handle}
                         </span>
-                        <span className="text-xs text-white/40">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(c.createdAt).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
+                      </div>
+                      <div className="flex flex-col gap-1 text-sm bg-muted/50 p-3 rounded-lg border">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Your side:</span>
+                          <span className="font-bold">
+                            {oppositeSide(
+                              c.fromProfile?.side || "light",
+                            ).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Opponent:</span>
+                          <span className="font-bold">
+                            {(c.fromProfile?.side || "light").toUpperCase()}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground/70 mt-1 italic">
+                          You fight against the{" "}
+                          {(c.fromProfile?.side || "light") === "light"
+                            ? "Light"
+                            : "Dark"}
+                          .
+                        </p>
                       </div>
                       <div className="flex gap-2 w-full">
                         <Button
@@ -179,16 +206,16 @@ export default function ChallengesPage() {
             {/* Gönderilen İstekler */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-2">
-                <h2 className="text-lg font-bold text-white/90">
+                <h2 className="text-lg font-bold">
                   Sent Challenges
                 </h2>
-                <span className="text-xs text-white/50 bg-white/10 px-2 py-1 rounded-full">
+                <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
                   {sent.length} / {limits.maxPendingSent}
                 </span>
               </div>
 
               {sent.length === 0 ? (
-                <div className="bg-white/5 rounded-2xl p-6 text-center text-white/40 text-sm border border-white/5">
+                <div className="bg-muted/50 rounded-2xl p-6 text-center text-muted-foreground text-sm border border-border">
                   No pending sent challenges.
                 </div>
               ) : (
@@ -196,25 +223,39 @@ export default function ChallengesPage() {
                   {sent.map((c) => (
                     <div
                       key={c._id}
-                      className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between"
+                      className="bg-card text-card-foreground shadow-sm border rounded-xl p-4 flex items-center justify-between"
                     >
                       <div className="flex flex-col">
                         <span className="font-semibold text-sm">
                           {c.toProfile?.displayName || c.toProfile?.handle}
                         </span>
-                        <span className="text-xs text-white/40">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(c.createdAt).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
                       </div>
+                      <div className="flex flex-col gap-1 text-sm mt-3 w-full">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Your side:</span>
+                          <span className="font-bold">
+                            {(myLocalSide || "light").toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Opponent:</span>
+                          <span className="font-bold">
+                            {oppositeSide(myLocalSide || "light").toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleAction(c._id, "cancel")}
                         disabled={processingId === c._id}
-                        className="bg-white/5 hover:bg-white/10 text-white border-white/10"
+                        className="bg-muted hover:bg-muted/80 text-muted-foreground border-none"
                       >
                         {processingId === c._id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />

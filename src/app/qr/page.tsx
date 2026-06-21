@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -23,16 +24,17 @@ export default async function QrPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-white flex flex-col items-center p-8">
+    <div className="min-h-screen w-full bg-background text-foreground flex flex-col items-center p-8">
       <div className="w-full max-w-md flex flex-col gap-8">
         <header className="flex justify-between items-center">
           <h1 className="text-3xl font-black tracking-tight">My QR Code</h1>
           <Link href="/">
             <Button
               variant="ghost"
-              className="text-white/70 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted"
             >
-              Home
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
             </Button>
           </Link>
         </header>

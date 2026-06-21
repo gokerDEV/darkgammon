@@ -3,10 +3,12 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { PushNotificationManager } from "@/components/PushNotificationManager";
+import { SideSelector } from "@/components/side/SideSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocalProfile } from "@/lib/profile/useLocalProfile";
+import type { PlayerSide } from "@/lib/side";
 
 function ProfileSetupContent() {
   const router = useRouter();
@@ -17,6 +19,7 @@ function ProfileSetupContent() {
   const [displayName, setDisplayName] = useState("");
   const [challengeMessage, setChallengeMessage] = useState("");
   const [victoryGifUrl, setVictoryGifUrl] = useState("");
+  const [side, setSide] = useState<PlayerSide>("light");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,6 +31,7 @@ function ProfileSetupContent() {
         setChallengeMessage(localProfile.challengeMsg);
       if (localProfile.giphyUrl && !victoryGifUrl)
         setVictoryGifUrl(localProfile.giphyUrl);
+      if (localProfile.side) setSide(localProfile.side as PlayerSide);
     }
   }, [
     localProfile.ready,
@@ -37,6 +41,7 @@ function ProfileSetupContent() {
     challengeMessage,
     displayName,
     victoryGifUrl,
+    localProfile.side,
   ]);
 
   async function onSubmit(e: React.FormEvent) {
@@ -57,6 +62,7 @@ function ProfileSetupContent() {
           displayName,
           challengeMessage,
           victoryGifUrl,
+          side,
         }),
       });
 
@@ -64,6 +70,8 @@ function ProfileSetupContent() {
         const data = await res.json();
         throw new Error(data.error || "An error occurred");
       }
+
+      localProfile.setSide(side);
 
       // Profile created successfully, redirect to callbackUrl
       router.push(callbackUrl);
@@ -76,66 +84,70 @@ function ProfileSetupContent() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-sm flex flex-col gap-6">
-        <header className="text-center">
-          <h1 className="text-3xl font-black tracking-tight">
-            Complete Your Profile
-          </h1>
-          <p className="mt-2 text-sm text-white/70">
-            Set your profile details to start the game.
+    <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-card text-card-foreground shadow-sm border rounded-2xl p-6">
+        <header className="text-center mb-6">
+          <h1 className="text-2xl font-bold">Complete Your Profile</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Set up your identity before entering the battlefield.
           </p>
         </header>
 
-        <form
-          onSubmit={onSubmit}
-          className="bg-white/5 rounded-2xl p-5 flex flex-col gap-4 border border-white/10"
-        >
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
           {error && (
-            <div className="text-red-400 text-sm p-2 bg-red-400/10 rounded">
+            <div className="text-destructive text-sm p-2 bg-destructive/10 rounded">
               {error}
             </div>
           )}
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="displayName" className="text-white/80">
-              Username
+          <div className="space-y-1.5">
+            <Label className="text-foreground">Choose Your Side</Label>
+            <p className="text-xs text-muted-foreground mb-1">
+              Your side defines your theme and the side you command when
+              creating battles.
+            </p>
+            <SideSelector value={side} onChange={setSide} />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="displayName" className="text-foreground">
+              Display Name
             </Label>
             <Input
               id="displayName"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Enter your username"
-              className="bg-white/10 border-white/20 text-white"
+              placeholder="e.g. Commander Shepard"
+              className="bg-background border-border text-foreground"
               maxLength={24}
               required
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="challengeMessage" className="text-white/80">
-              Challenge Message (Optional)
+          <div className="space-y-2">
+            <Label htmlFor="challengeMessage" className="text-foreground">
+              Challenge Message
             </Label>
             <Input
               id="challengeMessage"
               value={challengeMessage}
               onChange={(e) => setChallengeMessage(e.target.value)}
-              placeholder="Message shown when you win"
-              className="bg-white/10 border-white/20 text-white"
+              placeholder="e.g. Prepare to be crushed!"
+              className="bg-background border-border text-foreground"
               maxLength={100}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="victoryGifUrl" className="text-white/80">
-              Victory Giphy URL (Optional)
+          <div className="space-y-2">
+            <Label htmlFor="victoryGifUrl" className="text-foreground">
+              Victory GIF URL
             </Label>
             <Input
               id="victoryGifUrl"
               value={victoryGifUrl}
               onChange={(e) => setVictoryGifUrl(e.target.value)}
               placeholder="https://media.giphy.com/.../giphy.gif"
-              className="bg-white/10 border-white/20 text-white"
+              className="bg-background border-border text-foreground"
             />
           </div>
 
@@ -143,17 +155,17 @@ function ProfileSetupContent() {
             type="submit"
             size="lg"
             disabled={submitting || !displayName.trim()}
-            className="group bg-indigo-500 hover:bg-indigo-400 text-white font-semibold mt-2"
+            className="w-full mt-2"
           >
             {submitting ? "Saving..." : "Save Profile"}
           </Button>
         </form>
 
         {/* Offline Notifications */}
-        <div className="bg-white/5 rounded-2xl p-5 border border-white/10 flex flex-col gap-3">
+        <div className="mt-6 border-t pt-6 flex flex-col gap-3">
           <div className="flex flex-col">
             <h3 className="font-semibold">Challenge Notifications</h3>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-muted-foreground">
               Never miss a challenge from opponents, even when the app is
               closed.
             </p>
@@ -169,7 +181,7 @@ export default function ProfileSetup() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-4">
+        <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center p-4">
           Loading...
         </div>
       }

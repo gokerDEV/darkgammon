@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { exportBackgammonVideo } from "@/components/video/BackgammonVideoExporter";
 import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import type { BgSession, BgState, Color } from "@/lib/games/backgammon/types";
-import { colorOf } from "@/lib/games/backgammon/types";
 import { useLocalProfile } from "@/lib/profile/useLocalProfile";
 
 const LIGHT_VICTORY_MESSAGES = [
@@ -86,8 +85,10 @@ export default function ResultPage() {
 
   const myColor: Color | null = useMemo(() => {
     if (!session) return null;
-    if (session.host.localUserId === localUserId) return colorOf("host");
-    if (session.player?.localUserId === localUserId) return colorOf("player");
+    if (session.host.localUserId === localUserId)
+      return session.hostSide === "light" ? "white" : "black";
+    if (session.player?.localUserId === localUserId)
+      return session.playerSide === "light" ? "white" : "black";
     return null;
   }, [session, localUserId]);
 
@@ -157,7 +158,7 @@ export default function ResultPage() {
             {session.host.nickname || DARKGAMMON_COPY.inGame.guest}
           </span>
           <span className="text-[9px] uppercase text-muted-foreground">
-            {DARKGAMMON_COPY.sides.white}
+            {session.hostSide === "dark" ? "DARK" : "LIGHT"}
           </span>
         </div>
         <div className="text-center text-muted-foreground text-sm font-bold">
@@ -169,7 +170,7 @@ export default function ResultPage() {
             {session.player?.nickname ?? "—"}
           </span>
           <span className="text-[9px] uppercase text-muted-foreground">
-            {DARKGAMMON_COPY.sides.black}
+            {session.playerSide === "light" ? "LIGHT" : "DARK"}
           </span>
         </div>
       </div>
