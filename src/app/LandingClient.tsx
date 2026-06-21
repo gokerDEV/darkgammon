@@ -109,7 +109,7 @@ export default function LandingClient({
         <p className="text-center text-muted-foreground mt-4">
           Beta version. If you have feedback, reach out to{" "}
           <a
-            href="https://x.com/gokerDEV/status/2063674093052813493"
+            href="https://x.com/gokerDEV/status/2068760664626127332"
             className="underline hover:text-foreground"
           >
             @gokerDEV

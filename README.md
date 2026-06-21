@@ -1,121 +1,310 @@
-# Tavla.be 🎲
+# Darkgammon 🌗🎲
 
-Tavla.be is a modern, real-time online backgammon platform built with Next.js, MongoDB, and Pusher.
+**Choose your side. Shift the horizon.**
 
-## 🚀 Getting Started
+Darkgammon is a solstice-inspired reinterpretation of backgammon, where two players represent **Light** and **Dark** and battle for control of the board.
 
-Follow these instructions to set up the project and run it in your local development environment.
+Built for the [June Solstice Game Jam](https://dev.to/challenges/june-game-jam-2026-06-03).
+
+[![Play Darkgammon](https://img.shields.io/badge/PLAY-DARKGAMMON-111111?style=for-the-badge)](https://darkgammon.tavla.be)
+[![Challenge Submission](https://img.shields.io/badge/DEV-Challenge%20Submission-0A0A0A?style=for-the-badge&logo=devdotto)](https://dev.to/gokerdev/darkgammon-choose-your-side-1gpa)
+
+## Play
+
+**Live game:** [darkgammon.tavla.be](https://darkgammon.tavla.be)
+
+Choose the Light Side or the Dark Side, invite an opponent, and fight through strategy, probability, timing, and a little help—or betrayal—from the dice.
+
+## Video Demo
+
+<!-- Replace YOUTUBE_VIDEO_ID in both URLs below. -->
+
+[![Watch the Darkgammon gameplay demo](https://img.youtube.com/vi/A7-G2EyBb7k/maxresdefault.jpg)](https://www.youtube.com/watch?v=A7-G2EyBb7k)
+
+> GitHub README files do not support playable YouTube iframes. The thumbnail above opens the video on YouTube.
+
+## About the Game
+
+Darkgammon began as a themed version of [tavla.be](https://tavla.be), a browser-based real-time backgammon platform.
+
+The project was adapted for the June Solstice Game Jam by transforming the existing game into a conflict between Light and Dark.
+
+Backgammon already fits the theme surprisingly well:
+
+- The board has **24 points**, echoing the 24 hours of a day.
+- The two players travel in opposite directions, like Light and Dark following one another through a continuous cycle.
+- Pieces can be hit, sent backward, return to the board, travel home, and finally leave it.
+- The game naturally revolves around cycles, balance, setbacks, timing, probability, and return.
+
+Darkgammon brings that interpretation to the surface and turns each match into part of a wider battle between two sides.
+
+## Light vs. Dark
+
+Before entering a match, players choose a side:
+
+### Light Side
+
+Defend the longest day and push back the shadows.
+
+### Dark Side
+
+Bring on the longest night and let darkness take the board.
+
+The opponent represents the opposing force. Every completed match contributes to the wider Light vs. Dark challenge.
+
+The home page includes an hourly faction overview showing:
+
+- how many players joined each side;
+- how many matches each faction played;
+- how many victories Light and Dark claimed during the current cycle.
+
+## Features
+
+- **Real-time online backgammon**
+- **Light or Dark faction selection**
+- **Invite-based multiplayer matches**
+- **Hourly faction statistics**
+- **Match replay**
+- **Shareable video export**
+- **Google and Apple authentication**
+- **Player profiles**
+- **Custom QR-code invitations**
+- **Firebase notifications**
+
+## Challenge Submission
+
+Darkgammon was created for the **June Solstice Game Jam**.
+
+The challenge version builds on the previously completed tavla.be foundation, which already provided:
+
+- the backgammon engine;
+- real-time multiplayer;
+- invitations;
+- match persistence;
+- replay;
+- client-side video export.
+
+For the challenge, the project introduced:
+
+- the Darkgammon identity;
+- Light and Dark player factions;
+- solstice-inspired visual design;
+- side selection;
+- thematic game language;
+- hourly faction statistics;
+- side-based match and victory tracking;
+- a new home-page experience centered on the ongoing conflict.
+
+Read the full submission:
+
+**[Darkgammon: Choose Your Side](https://dev.to/gokerdev/darkgammon-choose-your-side-1gpa)**
+
+## Built with Google AI
+
+Darkgammon is submitted for the **Best Google AI Usage** category.
+
+Google Antigravity and Gemini were used throughout the final-day development process to:
+
+- shape the Light vs. Dark concept;
+- connect the solstice theme with backgammon mechanics;
+- define feature boundaries;
+- plan the faction-selection flow;
+- implement and refine the hourly challenge system;
+- iterate on interface states and game copy;
+- debug and complete the final integration.
+
+AI was used as a development partner rather than as a runtime feature inside the game.
+
+## Technology Stack
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Pusher](https://pusher.com/)
+- [Firebase](https://firebase.google.com/)
+- [Auth.js](https://authjs.dev/)
+- [@goker/qr-code](https://www.npmjs.com/package/@goker/qr-code)
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (or [Bun](https://bun.sh/))
+- Node.js or [Bun](https://bun.sh/)
 - MongoDB database
-- Pusher account (for real-time multiplayer features)
-- Apple Developer Account (for Sign in with Apple)
-- Google Cloud Console Account (for Google OAuth)
-- Firebase Project (for Firebase Cloud Messaging / Offline Notifications)
+- Pusher account
+- Firebase project
+- Google Cloud Console project for Google OAuth
+- Apple Developer account for Sign in with Apple
 
 ### Installation
 
-1. Clone the repository and install dependencies:
+Clone the repository and install the dependencies:
 
 ```bash
+git clone https://github.com/gokerDEV/darkgammon.git
+cd darkgammon
 bun install
 ```
 
-2. Configure environment variables:
-Create a `.env.local` file in the root directory and configure the necessary variables (MongoDB URI, Pusher credentials, OAuth secrets, Firebase configs, etc.). See the `.env.sample` or refer to your existing setup.
+Create a `.env.local` file in the project root and configure the required MongoDB, Pusher, Firebase, OAuth, and application variables.
 
-### Authentication Setup
+Use `.env.sample` as the reference when available.
 
-Tavla.be uses NextAuth.js (Auth.js) for handling authentications. To ensure OAuth flows (especially Apple) work properly, you need to set up the client secrets correctly.
+Start the development server:
 
-**Apple Sign-In Setup:**
-NextAuth v5 (Auth.js) automatically generates the required client secret on the fly if you provide the proper credentials. You do not need to manually generate or manage a static `APPLE_CLIENT_SECRET`.
+```bash
+bun dev
+```
 
-Make sure the following variables are defined in your `.env.local` (as explained in `APPLE.md`):
-- `APPLE_CLIENT_ID`
-- `APPLE_TEAM_ID`
-- `APPLE_KEY_ID`
-- `APPLE_PRIVATE_KEY`
+Then open:
 
-### Local Development with HTTPS (Required for OAuth)
+```text
+http://localhost:3000
+```
 
-Google and Apple OAuth providers require a valid domain and a secure context (HTTPS) even for local development. Testing these flows on `http://localhost:3000` will result in redirection errors or blocked callbacks.
+## Authentication Setup
 
-The most robust approach for local testing on a Mac is to use a custom local domain (`dev.tavla.be`), generate a local SSL certificate using `mkcert`, and route traffic through a reverse proxy like `Caddy`.
+Darkgammon uses Auth.js for authentication.
 
-1. **Map Local Domain:**
-   Edit your hosts file to point `dev.tavla.be` to your local machine:
-   ```bash
-   sudo nano /etc/hosts
-   ```
-   Add the following line:
-   ```text
-   127.0.0.1 dev.tavla.be
-   ```
+### Apple Sign-In
 
-2. **Generate Local SSL Certificates:**
-   Install `mkcert` (and `nss` for Firefox support if needed) via Homebrew, and generate certificates for your local domain:
-   ```bash
-   brew install mkcert nss
-   mkcert -install
-   mkcert dev.tavla.be
-   ```
-   This will generate two files in your current directory:
-   - `dev.tavla.be.pem`
-   - `dev.tavla.be-key.pem`
+Auth.js generates the Apple client secret dynamically when the required credentials are configured.
 
-3. **Set Up a Local Reverse Proxy (Caddy):**
-   Install Caddy via Homebrew:
-   ```bash
-   brew install caddy
-   ```
-   Create a file named `Caddyfile` in the directory where your certificates are located, and add the following configuration:
-   ```caddyfile
-   dev.tavla.be {
-     reverse_proxy localhost:3000
-     tls ./dev.tavla.be.pem ./dev.tavla.be-key.pem
-   }
-   ```
-   Run the proxy:
-   ```bash
-   caddy run
-   ```
+Add the following values to `.env.local`:
 
-### Testing OAuth Locally
+```env
+APPLE_CLIENT_ID=
+APPLE_TEAM_ID=
+APPLE_KEY_ID=
+APPLE_PRIVATE_KEY=
+```
 
-1. **Start Next.js:**
-   Run the Next.js development server on its default port:
-   ```bash
-   bun dev
-   ```
+See `APPLE.md` for the complete Apple configuration.
 
-2. **Configure Environment:**
-   Update your `.env.local` to point to the secure local domain and add it to allowed origins so it does not leak into production:
-   ```env
-   NEXTAUTH_URL="https://dev.tavla.be"
-   ALLOWED_ORIGINS="dev.tavla.be,darkgammon.tavla.be,tavla.be"
-   ```
+## Local HTTPS for OAuth
 
-   This will be picked up by your `next.config.ts` securely without exposing it in the repository:
-   ```typescript
-   export default {
-     // ...
-     allowedDevOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [],
-   }
-   ```
+For local OAuth testing, use a secure custom development domain such as:
 
-3. **Update Provider Consoles:**
-   Go to your Google Cloud Console and Apple Developer Portal, and update your allowed redirect URIs to point to your new secure local domain:
-   - Google Redirect URI: `https://dev.tavla.be/api/auth/callback/google`
-   - Apple Redirect URI: `https://dev.tavla.be/api/auth/callback/apple`
+```text
+https://dev.tavla.be
+```
 
-4. **Test the Flow:**
-   Open your browser and navigate to `https://dev.tavla.be`. Click "Sign in with Apple / Google". Because you are using a real domain structure + HTTPS callback, the OAuth providers will process the request successfully and redirect back to your local environment without issues.
+### 1. Map the Local Domain
 
-## 🛠 Features
-- **Real-Time Gameplay:** Smooth, synchronized state updates between opponents powered by Pusher.
-- **OAuth Providers:** Quick and secure sign-in via Google and Apple.
-- **Game Replay:** Stores match snapshots to MongoDB to allow replaying finished games via the `/replay` route.
-- **Custom QR Invitations:** Play against friends through fast QR code game challenges.
+Edit `/etc/hosts`:
+
+```bash
+sudo nano /etc/hosts
+```
+
+Add:
+
+```text
+127.0.0.1 dev.tavla.be
+```
+
+### 2. Generate Local Certificates
+
+Install `mkcert`:
+
+```bash
+brew install mkcert nss
+mkcert -install
+mkcert dev.tavla.be
+```
+
+This creates:
+
+```text
+dev.tavla.be.pem
+dev.tavla.be-key.pem
+```
+
+### 3. Configure Caddy
+
+Install Caddy:
+
+```bash
+brew install caddy
+```
+
+Create a `Caddyfile`:
+
+```caddyfile
+dev.tavla.be {
+  reverse_proxy localhost:3000
+  tls ./dev.tavla.be.pem ./dev.tavla.be-key.pem
+}
+```
+
+Run Caddy:
+
+```bash
+caddy run
+```
+
+### 4. Configure the Application
+
+Update `.env.local`:
+
+```env
+NEXTAUTH_URL="https://dev.tavla.be"
+ALLOWED_ORIGINS="dev.tavla.be,darkgammon.tavla.be,tavla.be"
+```
+
+Configure allowed development origins in `next.config.ts`:
+
+```typescript
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  allowedDevOrigins: process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",")
+    : [],
+};
+
+export default nextConfig;
+```
+
+### 5. Configure OAuth Redirect URIs
+
+Google:
+
+```text
+https://dev.tavla.be/api/auth/callback/google
+```
+
+Apple:
+
+```text
+https://dev.tavla.be/api/auth/callback/apple
+```
+
+Start Next.js with `bun dev`, run Caddy, and open `https://dev.tavla.be`.
+
+## QR Invitations
+
+Each player profile includes a unique QR code. Players can share these codes in physical or digital spaces and receive match invitations from friends or new opponents.
+
+QR codes are generated with:
+
+**[@goker/qr-code](https://www.npmjs.com/package/@goker/qr-code)**
+
+The longer-term idea is to let Light and Dark players defend their factions through QR challenges shared in cafés, events, universities, social profiles, and other physical or digital spaces.
+
+A physical QR code can begin a digital battle.
+
+## Author
+
+Built by [goker](https://goker.me).
+
+- DEV: [@gokerdev](https://dev.to/gokerDEV)
+- GitHub: [gokerDEV](https://github.com/gokerDEV)
+
+---
+
+May the better side win.
+
+Or at least roll doubles.
