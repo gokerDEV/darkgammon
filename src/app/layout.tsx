@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: DARKGAMMON_COPY.brand.title,
     description: DARKGAMMON_COPY.brand.description,
-    images: ["/tavla-beni.png"],
+    images: ["/darkgammon-og.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: DARKGAMMON_COPY.brand.title,
     description: DARKGAMMON_COPY.brand.description,
-    images: ["/tavla-beni.png"],
+    images: ["/darkgammon-og.jpg"],
   },
 };
 
