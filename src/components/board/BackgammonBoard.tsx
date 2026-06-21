@@ -137,7 +137,7 @@ function BoardSVG({
           <image href={diceUrl.src} x="50" y="230" width="157.5" height="93.2" preserveAspectRatio="xMidYMid meet" />
 
           {d1 !== null && (
-            <g transform="translate(-58 47) rotate(-14.7)">
+            <g transform="translate(-188 231) rotate(-60)">
               <DiePips v={d1} x={61.5} y={248.8} size={53.9} />
             </g>
           )}
@@ -164,12 +164,12 @@ function BoardSVG({
             <image href={diceReadyUrl.src} x="308" y="260" width="108" height="90" preserveAspectRatio="xMidYMid meet" className="animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
           )}
 
-          {(d1 !== null && !showMyEmpty) && (
-            <g transform="translate(815 45) rotate(115)">
+          {d1 !== null && (
+            <g transform="translate(873 371) rotate(155)">
               <DiePips v={d1 || 0} x={370.5} y={250.7} size={53.9} />
             </g>
           )}
-          {(d2 !== null && !showMyEmpty) && (
+          {d2 !== null && (
             <g transform="translate(768 220) rotate(125)">
               <DiePips v={d2 || 0} x={304.2} y={277.1} size={53.9} />
             </g>
