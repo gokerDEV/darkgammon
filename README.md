@@ -92,15 +92,17 @@ The most robust approach for local testing on a Mac is to use a custom local dom
    ```
 
 2. **Configure Environment:**
-   Update your `.env.local` to point to the secure local domain:
+   Update your `.env.local` to point to the secure local domain and add it to allowed origins so it does not leak into production:
    ```env
    NEXTAUTH_URL="https://dev.tavla.be"
+   ALLOWED_ORIGINS="dev.tavla.be,darkgammon.tavla.be,tavla.be"
    ```
 
-
-   ```next.config.ts
-   module.exports = {
-     allowedDevOrigins: ['dev.tavla.be'],
+   This will be picked up by your `next.config.ts` securely without exposing it in the repository:
+   ```typescript
+   export default {
+     // ...
+     allowedDevOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [],
    }
    ```
 
