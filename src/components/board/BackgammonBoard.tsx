@@ -3,6 +3,10 @@ import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import { legalMoves } from "@/lib/games/backgammon/engine";
 import type { BgState, Color, Move } from "@/lib/games/backgammon/types";
 
+import boardLayoutUrl from "@/assets/backgammon/board-layout.svg";
+import diceUrl from "@/assets/backgammon/dice.svg";
+import diceReadyUrl from "@/assets/backgammon/dice-ready.svg";
+
 type Props = {
   state: BgState;
   myColor: Color | null;
@@ -125,218 +129,21 @@ function BoardSVG({
       aria-label="Darkgammon Board"
     >
       <title>Darkgammon Board</title>
-      <defs>
-        <style>{`.st0{fill:#f9f9fb;}.st1{fill:#efefed;}.st2{fill:#e5e5e7;}.st3{fill:#bcbcbc;}.st4{fill:#d8d4cb;}.st5{fill:none;stroke:#c7c7cc;stroke-width:1.9px;}`}</style>
-      </defs>
-      <rect
-        className="st2"
-        x=".5"
-        y="46.5"
-        width="488"
-        height="488"
-        rx="14.2"
-        ry="14.2"
-      />
-      <g>
-        <rect
-          className="st1"
-          x="-114.7"
-          y="177.2"
-          width="471.9"
-          height="226.7"
-          rx="14.2"
-          ry="14.2"
-          transform="translate(-169.3 411.8) rotate(-90)"
-        />
-        <rect
-          className="st1"
-          x="131.2"
-          y="177.2"
-          width="471.9"
-          height="226.7"
-          rx="14.2"
-          ry="14.2"
-          transform="translate(76.6 657.7) rotate(-90)"
-        />
-      </g>
-      <g>
-        <path
-          className="st3"
-          d="M21.8,60.5h17.4c5,0,9,4.4,8.5,9.4l-8.7,82.6c-1.1,10.2-15.8,10.2-16.9,0l-8.7-82.6c-.5-5,3.4-9.4,8.5-9.4Z"
-        />
-        <path
-          className="st4"
-          d="M56.5,60.5h20.6c4.2,0,7.5,3.6,7,7.8l-10.3,97.6c-.9,8.5-13.2,8.5-14.1,0l-10.3-97.6c-.4-4.2,2.8-7.8,7-7.8Z"
-        />
-        <path
-          className="st3"
-          d="M91.2,60.5h23.7c3.4,0,6,2.9,5.6,6.3l-11.9,112.5c-.7,6.8-10.6,6.8-11.3,0l-11.9-112.5c-.4-3.3,2.3-6.3,5.6-6.3Z"
-        />
-        <path
-          className="st4"
-          d="M127.6,60.5h23.7c3.4,0,6,2.9,5.6,6.3l-11.9,112.5c-.7,6.8-10.6,6.8-11.3,0l-11.9-112.5c-.4-3.3,2.3-6.3,5.6-6.3Z"
-        />
-        <path
-          className="st3"
-          d="M165.4,60.5h20.6c4.2,0,7.5,3.6,7,7.8l-10.3,97.6c-.9,8.5-13.2,8.5-14.1,0l-10.3-97.6c-.4-4.2,2.8-7.8,7-7.8Z"
-        />
-        <path
-          className="st4"
-          d="M203.3,60.5h17.4c5,0,9,4.4,8.5,9.4l-8.7,82.6c-1.1,10.2-15.8,10.2-16.9,0l-8.7-82.6c-.5-5,3.4-9.4,8.5-9.4Z"
-        />
-      </g>
-      <g>
-        <path
-          className="st3"
-          d="M267.1,60.5h17.4c5,0,9,4.4,8.5,9.4l-8.7,82.6c-1.1,10.2-15.8,10.2-16.9,0l-8.7-82.6c-.5-5,3.4-9.4,8.5-9.4Z"
-        />
-        <path
-          className="st4"
-          d="M301.9,60.5h20.6c4.2,0,7.5,3.6,7,7.8l-10.3,97.6c-.9,8.5-13.2,8.5-14.1,0l-10.3-97.6c-.4-4.2,2.8-7.8,7-7.8Z"
-        />
-        <path
-          className="st3"
-          d="M336.6,60.5h23.7c3.4,0,6,2.9,5.6,6.3l-11.9,112.5c-.7,6.8-10.6,6.8-11.3,0l-11.9-112.5c-.4-3.3,2.3-6.3,5.6-6.3Z"
-        />
-        <path
-          className="st4"
-          d="M372.9,60.5h23.7c3.4,0,6,2.9,5.6,6.3l-11.9,112.5c-.7,6.8-10.6,6.8-11.3,0l-11.9-112.5c-.4-3.3,2.3-6.3,5.6-6.3Z"
-        />
-        <path
-          className="st3"
-          d="M410.8,60.5h20.6c4.2,0,7.5,3.6,7,7.8l-10.3,97.6c-.9,8.5-13.2,8.5-14.1,0l-10.3-97.6c-.4-4.2,2.8-7.8,7-7.8Z"
-        />
-        <path
-          className="st4"
-          d="M448.7,60.5h17.4c5,0,9,4.4,8.5,9.4l-8.7,82.6c-1.1,10.2-15.8,10.2-16.9,0l-8.7-82.6c-.5-5,3.4-9.4,8.5-9.4Z"
-        />
-      </g>
-      <g>
-        <path
-          className="st3"
-          d="M220.8,520.9h-17.4c-5,0-9-4.4-8.5-9.4l8.7-82.6c1.1-10.2,15.8-10.2,16.9,0l8.7,82.6c.5,5-3.4,9.4-8.5,9.4Z"
-        />
-        <path
-          className="st4"
-          d="M186,520.9h-20.6c-4.2,0-7.5-3.6-7-7.8l10.3-97.6c.9-8.5,13.2-8.5,14.1,0l10.3,97.6c.4,4.2-2.8,7.8-7,7.8Z"
-        />
-        <path
-          className="st3"
-          d="M151.3,520.9h-23.7c-3.4,0-6-2.9-5.6-6.3l11.9-112.5c.7-6.8,10.6-6.8,11.3,0l11.9,112.5c.4,3.3-2.3,6.3-5.6,6.3Z"
-        />
-        <path
-          className="st4"
-          d="M115,520.9h-23.7c-3.4,0-6-2.9-5.6-6.3l11.9-112.5c.7-6.8,10.6-6.8,11.3,0l11.9,112.5c.4,3.3-2.3,6.3-5.6,6.3Z"
-        />
-        <path
-          className="st3"
-          d="M77.1,520.9h-20.6c-4.2,0-7.5-3.6-7-7.8l10.3-97.6c.9-8.5,13.2-8.5,14.1,0l10.3,97.6c.4,4.2-2.8,7.8-7,7.8Z"
-        />
-        <path
-          className="st4"
-          d="M39.2,520.9h-17.4c-5,0-9-4.4-8.5-9.4l8.7-82.6c1.1-10.2,15.8-10.2,16.9,0l8.7,82.6c.5,5-3.4,9.4-8.5,9.4Z"
-        />
-      </g>
-      <g>
-        <path
-          className="st3"
-          d="M466.7,520.9h-17.4c-5,0-9-4.4-8.5-9.4l8.7-82.6c1.1-10.2,15.8-10.2,16.9,0l8.7,82.6c.5,5-3.4,9.4-8.5,9.4Z"
-        />
-        <path
-          className="st4"
-          d="M431.9,520.9h-20.6c-4.2,0-7.5-3.6-7-7.8l10.3-97.6c.9-8.5,13.2-8.5,14.1,0l10.3,97.6c.4,4.2-2.8,7.8-7,7.8Z"
-        />
-        <path
-          className="st3"
-          d="M397.2,520.9h-23.7c-3.4,0-6-2.9-5.6-6.3l11.9-112.5c.7-6.8,10.6-6.8,11.3,0l11.9,112.5c.4,3.3-2.3,6.3-5.6,6.3Z"
-        />
-        <path
-          className="st4"
-          d="M360.9,520.9h-23.7c-3.4,0-6-2.9-5.6-6.3l11.9-112.5c.7-6.8,10.6-6.8,11.3,0l11.9,112.5c.4,3.3-2.3,6.3-5.6,6.3Z"
-        />
-        <path
-          className="st3"
-          d="M323,520.9h-20.6c-4.2,0-7.5-3.6-7-7.8l10.3-97.6c.9-8.5,13.2-8.5,14.1,0l10.3,97.6c.4,4.2-2.8,7.8-7,7.8Z"
-        />
-        <path
-          className="st4"
-          d="M285.1,520.9h-17.4c-5,0-9-4.4-8.5-9.4l8.7-82.6c1.1-10.2,15.8-10.2,16.9,0l8.7,82.6c.5,5-3.4,9.4-8.5,9.4Z"
-        />
-      </g>
-      <rect
-        className="st2"
-        x="323.2"
-        y="542.4"
-        width="164.2"
-        height="39.3"
-        rx="19.6"
-        ry="19.6"
-      />
-      <rect
-        className="st2"
-        x="0"
-        y="0"
-        width="164.2"
-        height="39.3"
-        rx="19.6"
-        ry="19.6"
-      />
+      <image href={boardLayoutUrl.src} x="-24.9" y="0" width="538.3" height="581.7" preserveAspectRatio="xMidYMid meet" />
 
       {/* Left Dice (Opponent's turn) */}
       {!isMyTurn && rolled && (
         <g>
+          <image href={diceUrl.src} x="50" y="230" width="157.5" height="93.2" preserveAspectRatio="xMidYMid meet" />
+
           {d1 !== null && (
-            <g>
-              <rect
-                className="st0 drop-shadow-[0_4px_8px_rgba(28,28,30,0.2)]"
-                x="61.5"
-                y="248.8"
-                width="53.9"
-                height="53.9"
-                rx="13.8"
-                ry="13.8"
-                transform="translate(-45.3 18.9) rotate(-9.7)"
-              />
-              <rect
-                className="st5"
-                x="62.4"
-                y="249.7"
-                width="52"
-                height="52"
-                rx="12.8"
-                ry="12.8"
-                transform="translate(-45.3 18.9) rotate(-9.7)"
-              />
-              <g transform="translate(-45.3 18.9) rotate(-9.7)">
-                <DiePips v={d1} x={61.5} y={248.8} size={53.9} />
-              </g>
+            <g transform="translate(-58 47) rotate(-14.7)">
+              <DiePips v={d1} x={61.5} y={248.8} size={53.9} />
             </g>
           )}
           {d2 !== null && (
-            <g>
-              <rect
-                className="st0 drop-shadow-[0_4px_8px_rgba(28,28,30,0.2)]"
-                x="127"
-                y="276.9"
-                width="53.9"
-                height="53.9"
-                rx="13.8"
-                ry="13.8"
-                transform="translate(105.2 -33.3) rotate(18.6)"
-              />
-              <rect
-                className="st5"
-                x="128"
-                y="277.9"
-                width="52"
-                height="52"
-                rx="12.8"
-                ry="12.8"
-                transform="translate(105.2 -33.3) rotate(18.6)"
-              />
-              <g transform="translate(105.2 -33.3) rotate(18.6)">
-                <DiePips v={d2} x={127} y={276.9} size={53.9} />
-              </g>
+            <g transform="translate(-127 83) rotate(-31)">
+              <DiePips v={d2} x={127} y={276.9} size={53.9} />
             </g>
           )}
         </g>
@@ -346,101 +153,25 @@ function BoardSVG({
       {(isMyTurn && rolled) || showMyEmpty || isAnimating ? (
         // biome-ignore lint/a11y/noStaticElementInteractions: svg
         <g
-          className={
-            showMyEmpty && !isAnimating
-              ? "cursor-pointer pointer-events-auto animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"
-              : ""
-          }
+          className={showMyEmpty && !isAnimating ? "cursor-pointer pointer-events-auto" : ""}
           onClick={showMyEmpty && !isAnimating ? onEmptyClick : undefined}
         >
-          {(d1 !== null || showMyEmpty) && (
-            <g>
-              <rect
-                className="st0 drop-shadow-[0_4px_8px_rgba(28,28,30,0.2)]"
-                x="370.5"
-                y="250.7"
-                width="53.9"
-                height="53.9"
-                rx="13.8"
-                ry="13.8"
-                transform="translate(853.6 113.5) rotate(125.3)"
-              />
-              <rect
-                className="st5"
-                x="371.4"
-                y="251.7"
-                width="52"
-                height="52"
-                rx="12.8"
-                ry="12.8"
-                transform="translate(853.6 113.5) rotate(125.3)"
-              />
-              <g transform="translate(853.6 113.5) rotate(125.3)">
-                <DiePips v={d1 || 0} x={370.5} y={250.7} size={53.9} />
-              </g>
-            </g>
-          )}
-          {(d2 !== null || showMyEmpty) && (
-            <g>
-              <rect
-                className="st0 drop-shadow-[0_4px_8px_rgba(28,28,30,0.2)]"
-                x="304.2"
-                y="277.1"
-                width="53.9"
-                height="53.9"
-                rx="13.8"
-                ry="13.8"
-                transform="translate(762.9 429.5) rotate(153.6)"
-              />
-              <rect
-                className="st5"
-                x="305.1"
-                y="278.1"
-                width="52"
-                height="52"
-                rx="12.8"
-                ry="12.8"
-                transform="translate(762.9 429.5) rotate(153.6)"
-              />
-              <g transform="translate(762.9 429.5) rotate(153.6)">
-                <DiePips v={d2 || 0} x={304.2} y={277.1} size={53.9} />
-              </g>
-            </g>
-          )}
+          {/* Base dark dice */}
+          <image href={diceUrl.src} x="285" y="255" width="157.5" height="93.2" preserveAspectRatio="xMidYMid meet" />
+
+          {/* Breathe overlay */}
           {showMyEmpty && !isAnimating && (
-            <g>
-              <g>
-                <path
-                  className="fill-[#4a5151]"
-                  d="M398.1,299.4c-.4-.3-.7-.6-.9-1-5.6-11.7-17.7-12.5-18.2-12.6-1.4,0-2.6-1.3-2.5-2.8,0-1.4,1.3-2.6,2.8-2.5.6,0,15.6,1,22.6,15.5.6,1.3,0,2.9-1.2,3.5-.9.4-1.9.3-2.6-.2Z"
-                />
-                <g>
-                  <path
-                    className="fill-[#4a5151]"
-                    d="M390.4,280.3c-1.2-.8-1.5-2.5-.7-3.7l5.6-8.1c.8-1.2,2.5-1.5,3.7-.7s1.5,2.5.7,3.7l-5.6,8.1c-.8,1.2-2.5,1.5-3.7.7Z"
-                  />
-                  <path
-                    className="fill-[#4a5151]"
-                    d="M398.3,285.7c-1.2-.8-1.5-2.5-.7-3.7l5.6-8.1c.8-1.2,2.5-1.5,3.7-.7s1.5,2.5.7,3.7l-5.6,8.1c-.8,1.2-2.5,1.5-3.7.7Z"
-                  />
-                </g>
-              </g>
-              <g>
-                <path
-                  className="fill-[#4a5151]"
-                  d="M339.8,320c-3.7,1.8-8.4,3-13.9,2.7-1.5,0-2.6-1.4-2.5-2.8,0-1.5,1.4-2.6,2.8-2.5,13.2.9,20-9.3,20.2-9.8.8-1.2,2.5-1.6,3.7-.8,1.2.8,1.6,2.4.8,3.7-.2.4-4,6.1-11.2,9.6Z"
-                />
-                <g>
-                  <path
-                    className="fill-[#4a5151]"
-                    d="M330.6,311.5c-1.3.6-2.9,0-3.6-1.2l-4.4-9c-.6-1.3,0-2.9,1.2-3.6s2.9,0,3.6,1.2l4.4,9c.6,1.3,0,2.9-1.2,3.6Z"
-                  />
-                  <path
-                    className="fill-[#4a5151]"
-                    d="M339.3,307.3c-1.3.6-2.9,0-3.6-1.2l-4.4-9c-.6-1.3,0-2.9,1.2-3.6s2.9,0,3.6,1.2l4.4,9c.6,1.3,0,2.9-1.2,3.6Z"
-                  />
-                </g>
-              </g>
+            <image href={diceReadyUrl.src} x="308" y="260" width="108" height="90" preserveAspectRatio="xMidYMid meet" className="animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
+          )}
+
+          {(d1 !== null && !showMyEmpty) && (
+            <g transform="translate(815 45) rotate(115)">
+              <DiePips v={d1 || 0} x={370.5} y={250.7} size={53.9} />
+            </g>
+          )}
+          {(d2 !== null && !showMyEmpty) && (
+            <g transform="translate(768 220) rotate(125)">
+              <DiePips v={d2 || 0} x={304.2} y={277.1} size={53.9} />
             </g>
           )}
         </g>
@@ -586,13 +317,11 @@ export function BackgammonBoard({
           height: "32%",
           transform: "translateX(-50%)",
         }}
-        className={`absolute rounded-[10px] outline-none transition duration-150 flex flex-col items-center ${top ? "justify-start" : "justify-end"} gap-[2px] ${
-          isMyTurn ? "hover:bg-black/5" : "cursor-default"
-        } ${isSel ? "ring-2 ring-[#0a84ff] ring-offset-2 ring-offset-transparent bg-black/5" : ""} ${
-          isLegal
+        className={`absolute rounded-[10px] outline-none transition duration-150 flex flex-col items-center ${top ? "justify-start" : "justify-end"} gap-[2px] ${isMyTurn ? "hover:bg-black/5" : "cursor-default"
+          } ${isSel ? "ring-2 ring-[#0a84ff] ring-offset-2 ring-offset-transparent bg-black/5" : ""} ${isLegal
             ? "ring-2 ring-[#0a84ff]/70 ring-offset-2 ring-offset-transparent bg-black/5"
             : ""
-        } pointer-events-auto`}
+          } pointer-events-auto`}
         aria-label={`Point ${idx + 1}`}
       >
         <div className="flex flex-col items-center gap-[1px] w-full mt-1 mb-1 relative h-full">
@@ -679,11 +408,10 @@ export function BackgammonBoard({
         <div className="absolute bottom-0 right-0 w-[33.6%] h-[6.75%] flex items-center justify-center px-4 pointer-events-auto">
           <button
             type="button"
-            className={`flex w-full items-center justify-center h-full rounded-[19px] transition ${
-              canBearOff
-                ? "cursor-pointer ring-2 ring-[#0a84ff] bg-black/5 hover:bg-black/10"
-                : "cursor-default"
-            }`}
+            className={`flex w-full items-center justify-center h-full rounded-[19px] transition ${canBearOff
+              ? "cursor-pointer ring-2 ring-[#0a84ff] bg-black/5 hover:bg-black/10"
+              : "cursor-default"
+              }`}
             onClick={clickOff}
           >
             <OffTray
@@ -706,11 +434,10 @@ export function BackgammonBoard({
 
         {/* End Turn Button - Under Dice (Right Side) */}
         <div
-          className={`absolute top-[60%] left-[75%] -translate-x-1/2 pointer-events-auto transition-all duration-300 ${
-            canEndTurn
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
-          }`}
+          className={`absolute top-[60%] left-[75%] -translate-x-1/2 pointer-events-auto transition-all duration-300 ${canEndTurn
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-95 pointer-events-none"
+            }`}
         >
           <button
             type="button"
@@ -728,11 +455,10 @@ export function BackgammonBoard({
             type="button"
             onClick={onOfferDouble}
             disabled={!canOffer}
-            className={`flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 shadow-sm transition ${
-              canOffer
-                ? "bg-white hover:bg-[#f2f2f4] text-[#1c1c1e] cursor-pointer"
-                : "bg-white/60 text-[#1c1c1e]/40 cursor-default"
-            }`}
+            className={`flex items-center gap-2 rounded-full border border-black/10 px-3 py-1.5 shadow-sm transition ${canOffer
+              ? "bg-white hover:bg-[#f2f2f4] text-[#1c1c1e] cursor-pointer"
+              : "bg-white/60 text-[#1c1c1e]/40 cursor-default"
+              }`}
             aria-label="Offer double"
           >
             <span className="text-[11px] font-bold tracking-wide uppercase">
@@ -762,12 +488,7 @@ function Checker({ color }: { color: Color | null }) {
       viewBox="0 0 35 35"
       aria-hidden="true"
     >
-      <circle cx="17.5" cy="17.5" r="17.5" fill={circleFill} />
-      <path
-        fill="#fff"
-        opacity={pathOpacity}
-        d="M17.5,1C8.4,1,1,8.4,1,17.5s7.4,16.5,16.5,16.5,16.5-7.4,16.5-16.5S26.6,1,17.5,1ZM17.5,26.2c-4.8,0-8.7-3.9-8.7-8.7s3.9-8.7,8.7-8.7,8.7,3.9,8.7,8.7-3.9,8.7-8.7,8.7Z"
-      />
+      <image href={isWhite ? "/assets/backgammon/checker-white.svg" : "/assets/backgammon/checker-black.svg"} x="0" y="0" width="35" height="35" preserveAspectRatio="xMidYMid meet" />
     </svg>
   );
 }
@@ -880,9 +601,8 @@ function BarStack({
       type="button"
       onClick={onClick}
       disabled={count === 0}
-      className={`pointer-events-auto flex flex-col items-center justify-center gap-1 p-1 rounded-xl transition disabled:opacity-45 ${
-        selected ? "ring-2 ring-[#0a84ff] bg-black/5" : "hover:bg-black/5"
-      }`}
+      className={`pointer-events-auto flex flex-col items-center justify-center gap-1 p-1 rounded-xl transition disabled:opacity-45 ${selected ? "ring-2 ring-[#0a84ff] bg-black/5" : "hover:bg-black/5"
+        }`}
       aria-label={`${color} bar`}
     >
       {count > 0 ? (
