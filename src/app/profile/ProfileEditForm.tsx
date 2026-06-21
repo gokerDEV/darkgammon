@@ -60,33 +60,31 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
     <div className="flex flex-col gap-6 w-full">
       <div className="flex justify-between items-center bg-white/5 rounded-2xl p-6 border border-white/10">
         <div className="flex flex-col">
-          <h3 className="font-bold text-white">Public Profilin</h3>
+          <h3 className="font-bold text-white">Public Profile</h3>
           <p className="text-sm text-white/50">
-            İnsanların seni göreceği genel profil sayfası.
+            Your public profile page where challengers will see you.
           </p>
         </div>
-        <Link href={`/u/${profile.handle}`}>
+        <Link href={`/ni/@${profile.handle}`}>
           <Button
             variant="outline"
             className="border-white/20 text-white hover:bg-white/10"
           >
-            Görüntüle
+            View
           </Button>
         </Link>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
         <div className="flex flex-col gap-4 bg-white/5 rounded-2xl p-6 border border-white/10">
-          <h2 className="text-xl font-bold text-white mb-2">
-            Profil Bilgileri
-          </h2>
+          <h2 className="text-xl font-bold text-white mb-2">Profile Details</h2>
 
           <div className="flex flex-col gap-2">
             <label
               htmlFor="displayName"
               className="text-sm font-medium text-white/70"
             >
-              Görünen İsim
+              Display Name
             </label>
             <input
               id="displayName"
@@ -104,7 +102,7 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
               htmlFor="handle"
               className="text-sm font-medium text-white/70"
             >
-              Kullanıcı Adı (Handle)
+              Username (Handle)
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-4 text-white/50">@</span>
@@ -123,8 +121,8 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
               />
             </div>
             <p className="text-xs text-white/40">
-              Sadece küçük harf, rakam, tire (-) ve alt tire (_)
-              kullanabilirsiniz.
+              Only lowercase letters, numbers, hyphens (-), and underscores (_)
+              are allowed.
             </p>
           </div>
 
@@ -133,7 +131,7 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
               htmlFor="challengeMessage"
               className="text-sm font-medium text-white/70"
             >
-              Meydan Okuma Mesajı
+              Challenge Message
             </label>
             <input
               id="challengeMessage"
@@ -150,7 +148,7 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
               htmlFor="victoryGiphyUrl"
               className="text-sm font-medium text-white/70"
             >
-              Zafer Giphy URL
+              Victory Giphy URL
             </label>
             <input
               id="victoryGiphyUrl"
@@ -167,15 +165,15 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
             disabled={loading}
             className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white"
           >
-            {loading ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
+            {loading ? "Saving..." : "Save Changes"}
           </Button>
         </div>
 
         <div className="flex justify-between items-center bg-white/5 rounded-2xl p-6 border border-white/10">
           <div className="flex flex-col">
-            <h3 className="font-bold text-white">QR Kod</h3>
+            <h3 className="font-bold text-white">QR Code</h3>
             <p className="text-sm text-white/50">
-              Davet QR kodunu görüntüle ve yönet.
+              View and manage your Battle QR code.
             </p>
           </div>
           <Link href="/qr">
@@ -183,7 +181,7 @@ export function ProfileEditForm({ profile }: { profile: Profile }) {
               variant="outline"
               className="border-white/20 text-white hover:bg-white/10"
             >
-              QR Sayfasına Git
+              Go to QR Page
             </Button>
           </Link>
         </div>

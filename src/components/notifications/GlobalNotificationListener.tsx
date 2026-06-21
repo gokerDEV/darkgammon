@@ -30,7 +30,7 @@ export function GlobalNotificationListener() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "accept" }),
       });
-      if (!res.ok) throw new Error("Kabul edilemedi");
+      if (!res.ok) throw new Error("Failed to accept");
       const data = await res.json();
       if (data.sessionId) {
         router.push(`/ni/${data.sessionId}`);
@@ -61,10 +61,12 @@ export function GlobalNotificationListener() {
   useChannel(activeChannel, {
     // biome-ignore lint/suspicious/noExplicitAny: complex pusher typing
     "challenge:new": (data: any) => {
-      const fromName = data.fromProfile?.displayName || "Birisi";
+      const fromName = data.fromProfile?.displayName || "Someone";
       toast(
         <div className="flex flex-col gap-2">
-          <p className="font-semibold">{fromName} sizi tavlaya davet ediyor!</p>
+          <p className="font-semibold">
+            {fromName} is challenging you to a battle!
+          </p>
           <div className="flex gap-2 mt-2">
             <button
               type="button"
@@ -76,7 +78,7 @@ export function GlobalNotificationListener() {
                 handleAccept(data.challengeId, toastId || "");
               }}
             >
-              Kabul Et
+              Accept
             </button>
             <button
               type="button"
@@ -88,7 +90,7 @@ export function GlobalNotificationListener() {
                 handleDecline(data.challengeId, toastId || "");
               }}
             >
-              Reddet
+              Decline
             </button>
           </div>
         </div>,
@@ -97,16 +99,18 @@ export function GlobalNotificationListener() {
     },
     // biome-ignore lint/suspicious/noExplicitAny: complex pusher typing
     "challenge:accepted": (data: any) => {
-      const fromName = data.fromProfile?.displayName || "Rakip";
-      toast.success(`${fromName} davetinizi kabul etti! Maç başlıyor...`);
+      const fromName = data.fromProfile?.displayName || "Opponent";
+      toast.success(
+        `${fromName} accepted your challenge! Battle is starting...`,
+      );
       if (data.sessionId) {
         router.push(`/ni/${data.sessionId}`);
       }
     },
     // biome-ignore lint/suspicious/noExplicitAny: complex pusher typing
     "challenge:declined": (data: any) => {
-      const fromName = data.fromProfile?.displayName || "Rakip";
-      toast.error(`${fromName} davetinizi reddetti.`);
+      const fromName = data.fromProfile?.displayName || "Opponent";
+      toast.error(`${fromName} declined your challenge.`);
     },
   });
 

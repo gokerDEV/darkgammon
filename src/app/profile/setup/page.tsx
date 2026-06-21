@@ -42,7 +42,7 @@ function ProfileSetupContent() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!displayName.trim()) {
-      setError("Kullanıcı Adı zorunludur.");
+      setError("Username is required.");
       return;
     }
 
@@ -62,7 +62,7 @@ function ProfileSetupContent() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Bir hata oluştu");
+        throw new Error(data.error || "An error occurred");
       }
 
       // Profile created successfully, redirect to callbackUrl
@@ -80,10 +80,10 @@ function ProfileSetupContent() {
       <div className="w-full max-w-sm flex flex-col gap-6">
         <header className="text-center">
           <h1 className="text-3xl font-black tracking-tight">
-            Profilini Tamamla
+            Complete Your Profile
           </h1>
           <p className="mt-2 text-sm text-white/70">
-            Oyuna başlamak için profil bilgilerini belirle.
+            Set your profile details to start the game.
           </p>
         </header>
 
@@ -99,13 +99,13 @@ function ProfileSetupContent() {
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="displayName" className="text-white/80">
-              Kullanıcı Adı
+              Username
             </Label>
             <Input
               id="displayName"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Kullanıcı adınızı girin"
+              placeholder="Enter your username"
               className="bg-white/10 border-white/20 text-white"
               maxLength={24}
               required
@@ -114,13 +114,13 @@ function ProfileSetupContent() {
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="challengeMessage" className="text-white/80">
-              Meydan Okuma Mesajı (Opsiyonel)
+              Challenge Message (Optional)
             </Label>
             <Input
               id="challengeMessage"
               value={challengeMessage}
               onChange={(e) => setChallengeMessage(e.target.value)}
-              placeholder="Kazandığında gösterilecek mesaj"
+              placeholder="Message shown when you win"
               className="bg-white/10 border-white/20 text-white"
               maxLength={100}
             />
@@ -128,7 +128,7 @@ function ProfileSetupContent() {
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="victoryGifUrl" className="text-white/80">
-              Zafer Giphy URL'si (Opsiyonel)
+              Victory Giphy URL (Optional)
             </Label>
             <Input
               id="victoryGifUrl"
@@ -145,17 +145,17 @@ function ProfileSetupContent() {
             disabled={submitting || !displayName.trim()}
             className="group bg-indigo-500 hover:bg-indigo-400 text-white font-semibold mt-2"
           >
-            {submitting ? "Kaydediliyor..." : "Profili Kaydet"}
+            {submitting ? "Saving..." : "Save Profile"}
           </Button>
         </form>
 
         {/* Offline Notifications */}
         <div className="bg-white/5 rounded-2xl p-5 border border-white/10 flex flex-col gap-3">
           <div className="flex flex-col">
-            <h3 className="font-semibold">Meydan Okuma Bildirimleri</h3>
+            <h3 className="font-semibold">Challenge Notifications</h3>
             <p className="text-sm text-white/70">
-              Uygulama kapalıyken bile rakiplerinizden gelen istekleri
-              kaçırmayın.
+              Never miss a challenge from opponents, even when the app is
+              closed.
             </p>
           </div>
           <PushNotificationManager />
@@ -170,7 +170,7 @@ export default function ProfileSetup() {
     <Suspense
       fallback={
         <div className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-4">
-          Yükleniyor...
+          Loading...
         </div>
       }
     >

@@ -1,5 +1,6 @@
 import { Volume2, VolumeX, X } from "lucide-react";
 import { Avatar, type ConnStatus } from "@/components/Avatar";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 
 interface GameHeaderProps {
   whitePlayer: string;
@@ -30,7 +31,9 @@ export function GameHeader({
     <div className="flex flex-col shrink-0 w-full">
       {/* Top Bar */}
       <div className="flex items-center justify-between px-4 pt-2 shrink-0 h-8">
-        <h1 className="text-xl font-bold tracking-tight">tavla.be</h1>
+        <h1 className="text-xl font-bold tracking-tight uppercase tracking-widest">
+          {DARKGAMMON_COPY.brand.name}
+        </h1>
         {showControls && (
           <div className="flex items-center gap-1">
             {onToggleMute && (
@@ -38,7 +41,11 @@ export function GameHeader({
                 type="button"
                 onClick={onToggleMute}
                 className="h-8 w-8 rounded-full hover:bg-muted flex items-center justify-center"
-                aria-label={muted ? "Unmute" : "Mute"}
+                aria-label={
+                  muted
+                    ? DARKGAMMON_COPY.inGame.unmute
+                    : DARKGAMMON_COPY.inGame.mute
+                }
               >
                 {muted ? (
                   <VolumeX className="h-5 w-5" />
@@ -52,7 +59,7 @@ export function GameHeader({
                 type="button"
                 onClick={onExit}
                 className="h-8 w-8 rounded-full hover:bg-muted flex items-center justify-center"
-                aria-label="Exit"
+                aria-label={DARKGAMMON_COPY.inGame.leaveBattle}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -85,7 +92,8 @@ export function GameHeader({
             VS
           </div>
           <div className="uppercase text-[10px] tracking-wide w-1/2 text-center break-words">
-            {blackPlayer ?? "BEKLENİYOR..."}
+            {blackPlayer ??
+              `${DARKGAMMON_COPY.connection.waiting.toUpperCase()}...`}
           </div>
         </div>
 

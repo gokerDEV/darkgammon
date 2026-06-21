@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
   env: {
     CHEATING: process.env.CHEATING,
   },
-  allowedDevOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [],
+  allowedDevOrigins: process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",")
+    : [],
 };
 
 export default nextConfig;

@@ -3,6 +3,7 @@ import { Figtree, Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { GlobalNotificationListener } from "@/components/notifications/GlobalNotificationListener";
 import { Toaster } from "@/components/ui/sonner";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import { cn } from "@/lib/utils";
 
 const figtreeHeading = Figtree({
@@ -23,17 +24,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "tavla.be",
-  description: "Tavla beni =)",
+  title: DARKGAMMON_COPY.brand.title,
+  description: DARKGAMMON_COPY.brand.description,
   openGraph: {
-    title: "tavla.be",
-    description: "Tavla beni =)",
+    title: DARKGAMMON_COPY.brand.title,
+    description: DARKGAMMON_COPY.brand.description,
     images: ["/tavla-beni.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "tavla.be",
-    description: "Tavla beni =)",
+    title: DARKGAMMON_COPY.brand.title,
+    description: DARKGAMMON_COPY.brand.description,
     images: ["/tavla-beni.png"],
   },
 };

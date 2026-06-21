@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 
 export default function LandingClient({
   profile,
@@ -37,18 +38,17 @@ export default function LandingClient({
     <div className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-4">
       <div className="w-full max-w-sm flex flex-col gap-6">
         <header className="text-center">
-          <h1 className="text-4xl font-black tracking-tight">tavla.be</h1>
+          <h1 className="text-4xl font-black tracking-tight uppercase tracking-widest">
+            {DARKGAMMON_COPY.brand.name}
+          </h1>
           <p className="mt-2 text-lg text-white/70 font-medium group cursor-default w-fit mx-auto">
-            <span className="mr-1">Tavla beni </span>
-            <span className="inline-block rotate-[60deg] transition-transform group-hover:animate-[shake-smile_0.3s_ease-in-out_infinite]">
-              =)
-            </span>
+            {DARKGAMMON_COPY.brand.supportCopy}
           </p>
         </header>
 
         <div className="bg-white/5 rounded-2xl p-5 flex flex-col gap-4 border border-white/10 text-center">
           <h2 className="text-xl font-bold text-white mb-2">
-            Hoş geldin, {String(profile.displayName)}!
+            Welcome, {String(profile.displayName)}!
           </h2>
 
           <Button
@@ -58,13 +58,10 @@ export default function LandingClient({
             className="group bg-indigo-500 hover:bg-indigo-400 text-white font-semibold"
           >
             {creating ? (
-              "Oluşturuluyor…"
+              "Creating..."
             ) : (
               <span className="flex items-center gap-1.5">
-                Tavla beni
-                <span className="inline-block transition-transform duration-300 ease-out group-hover:rotate-[60deg]">
-                  =)
-                </span>
+                {DARKGAMMON_COPY.battle.create}
               </span>
             )}
           </Button>
@@ -74,7 +71,7 @@ export default function LandingClient({
               variant="outline"
               className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white border-none"
             >
-              Profilim
+              Profile
             </Button>
           </Link>
 
@@ -84,7 +81,7 @@ export default function LandingClient({
               className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white border-none flex items-center justify-center gap-2"
             >
               <Inbox className="w-4 h-4 opacity-70" />
-              Bekleyen İstekler
+              Pending Challenges
             </Button>
           </Link>
 
@@ -94,7 +91,7 @@ export default function LandingClient({
               className="w-full bg-white/5 border-white/10 hover:bg-white/10 text-white shadow-lg shadow-black/20 h-12 text-base font-semibold"
             >
               <QrCode className="w-5 h-5 mr-2 opacity-70" />
-              QR Kodum
+              My QR Code
             </Button>
           </Link>
 
@@ -104,20 +101,19 @@ export default function LandingClient({
               onClick={() => signOut()}
               className="w-full text-white/50 hover:text-white hover:bg-white/5"
             >
-              Çıkış Yap
+              Sign Out
             </Button>
           </div>
         </div>
 
         <p className="text-center text-white/60 mt-4">
-          Proje test aşamasında, sorun yaşarsanız ya da önerileriniz varsa{" "}
+          Beta version. If you have feedback, reach out to{" "}
           <a
             href="https://x.com/gokerDEV/status/2063674093052813493"
             className="underline hover:text-white"
           >
             @gokerDEV
-          </a>{" "}
-          üzerinden bana ulaşın!
+          </a>
         </p>
       </div>
     </div>

@@ -106,7 +106,7 @@ export default function ChallengesPage() {
             </Button>
           </Link>
           <h1 className="text-2xl font-black tracking-tight text-center flex-1 pr-10">
-            Bekleyen İstekler
+            Pending Challenges
           </h1>
         </header>
 
@@ -120,7 +120,7 @@ export default function ChallengesPage() {
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-2">
                 <h2 className="text-lg font-bold text-white/90">
-                  Gelen İstekler
+                  Received Challenges
                 </h2>
                 <span className="text-xs text-white/50 bg-white/10 px-2 py-1 rounded-full">
                   {received.length} / {limits.maxPendingReceived}
@@ -129,7 +129,7 @@ export default function ChallengesPage() {
 
               {received.length === 0 ? (
                 <div className="bg-white/5 rounded-2xl p-6 text-center text-white/40 text-sm border border-white/5">
-                  Bekleyen gelen istek yok.
+                  No pending received challenges.
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -156,7 +156,7 @@ export default function ChallengesPage() {
                           disabled={processingId === c._id}
                           className="flex-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/20"
                         >
-                          Reddet
+                          Decline
                         </Button>
                         <Button
                           onClick={() => handleAction(c._id, "accept")}
@@ -166,7 +166,7 @@ export default function ChallengesPage() {
                           {processingId === c._id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
-                            "Kabul Et"
+                            "Accept"
                           )}
                         </Button>
                       </div>
@@ -180,7 +180,7 @@ export default function ChallengesPage() {
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between px-2">
                 <h2 className="text-lg font-bold text-white/90">
-                  Gönderilen İstekler
+                  Sent Challenges
                 </h2>
                 <span className="text-xs text-white/50 bg-white/10 px-2 py-1 rounded-full">
                   {sent.length} / {limits.maxPendingSent}
@@ -189,7 +189,7 @@ export default function ChallengesPage() {
 
               {sent.length === 0 ? (
                 <div className="bg-white/5 rounded-2xl p-6 text-center text-white/40 text-sm border border-white/5">
-                  Bekleyen gönderilmiş istek yok.
+                  No pending sent challenges.
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -219,7 +219,7 @@ export default function ChallengesPage() {
                         {processingId === c._id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                          "İptal Et"
+                          "Cancel"
                         )}
                       </Button>
                     </div>

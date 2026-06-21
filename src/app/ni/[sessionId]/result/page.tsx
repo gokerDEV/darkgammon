@@ -8,33 +8,28 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { exportBackgammonVideo } from "@/components/video/BackgammonVideoExporter";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import type { BgSession, BgState, Color } from "@/lib/games/backgammon/types";
 import { colorOf } from "@/lib/games/backgammon/types";
 import { useLocalProfile } from "@/lib/profile/useLocalProfile";
 
-const WINNER_MESSAGES = [
-  "Cubes and luck on my side.",
-  "Pip count perfection.",
-  "Bear-off champion.",
-  "Dice obeyed me today.",
-  "Strategy beats variance.",
-  "Another clean run-off.",
-  "Rematch when you're ready.",
-  "Doubling cube delivered.",
-  "Board controlled, points secured.",
-  "Victory in 15 checkers.",
+const LIGHT_VICTORY_MESSAGES = [
+  "The Light held the board.",
+  "The longest day is ours.",
+  "Darkness retreats.",
 ];
-const LOSER_MESSAGES = [
-  "Dice betrayed me.",
-  "I want a rematch.",
-  "Fine, you rolled well.",
-  "Variance giveth, variance taketh.",
-  "Next one is mine.",
-  "Lucky doubles.",
-  "Revenge loading.",
-  "My cube decision was right…",
-  "One bad roll cost me.",
-  "Okay that bear-off was clean.",
+const DARK_VICTORY_MESSAGES = [
+  "Night has claimed the board.",
+  "The Dark rises.",
+  "The longest day ends here.",
+];
+const DEFEAT_MESSAGES = [
+  "The balance will shift again.",
+  "This battle is over. The war is not.",
+  "I will return for the rematch.",
+  "The dice favored your side.",
+  "Enjoy the victory while it lasts.",
+  "Next time, the board is mine.",
 ];
 
 const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -46,8 +41,8 @@ export default function ResultPage() {
   const router = useRouter();
   const [session, setSession] = useState<BgSession | null>(null);
   const [snapshots, setSnapshots] = useState<BgState[]>([]);
-  const [winnerMsg, setWinnerMsg] = useState(() => pick(WINNER_MESSAGES));
-  const [loserMsg, setLoserMsg] = useState(() => pick(LOSER_MESSAGES));
+  const [winnerMsg, setWinnerMsg] = useState("");
+  const [loserMsg, setLoserMsg] = useState(() => pick(DEFEAT_MESSAGES));
   const [exporting, setExporting] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
@@ -77,6 +72,18 @@ export default function ResultPage() {
     };
   }, [ready, sessionId]);
 
+  useEffect(() => {
+    if (session && !winnerMsg) {
+      const color =
+        session.host.localUserId === localUserId ? "white" : "black";
+      setWinnerMsg(
+        pick(
+          color === "white" ? LIGHT_VICTORY_MESSAGES : DARK_VICTORY_MESSAGES,
+        ),
+      );
+    }
+  }, [session, localUserId, winnerMsg]);
+
   const myColor: Color | null = useMemo(() => {
     if (!session) return null;
     if (session.host.localUserId === localUserId) return colorOf("host");
@@ -98,7 +105,7 @@ export default function ResultPage() {
       setDownloadUrl(url);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `play-withme-bg-${sessionId}.${ext}`;
+      a.download = `darkgammon-${sessionId}.${ext}`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -134,18 +141,23 @@ export default function ResultPage() {
     <GameFrame>
       <div className="px-4 pt-3 pb-1 flex items-center justify-between shrink-0">
         <div className="text-sm font-semibold">
-          <span className="font-bold">tavla.be</span>
+          <span className="font-bold uppercase tracking-widest">
+            {DARKGAMMON_COPY.brand.name}
+          </span>
         </div>
       </div>
 
       <div className="grid grid-cols-3 items-center px-4 pt-2">
         <div className="flex flex-col items-center gap-1">
-          <Avatar nickname={session.host.nickname || "Misafir"} tone="host" />
+          <Avatar
+            nickname={session.host.nickname || DARKGAMMON_COPY.inGame.guest}
+            tone="host"
+          />
           <span className="text-xs font-semibold truncate max-w-[100px]">
-            {session.host.nickname || "Misafir"}
+            {session.host.nickname || DARKGAMMON_COPY.inGame.guest}
           </span>
           <span className="text-[9px] uppercase text-muted-foreground">
-            White
+            {DARKGAMMON_COPY.sides.white}
           </span>
         </div>
         <div className="text-center text-muted-foreground text-sm font-bold">
@@ -157,36 +169,51 @@ export default function ResultPage() {
             {session.player?.nickname ?? "—"}
           </span>
           <span className="text-[9px] uppercase text-muted-foreground">
-            Black
+            {DARKGAMMON_COPY.sides.black}
           </span>
         </div>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-5 gap-3 text-center">
-        <h1 className="text-3xl font-black">
+        <h1 className="text-3xl font-black uppercase">
           {outcome === "win"
-            ? "You won!"
+            ? myColor === "white"
+              ? DARKGAMMON_COPY.inGame.winnerLight
+              : DARKGAMMON_COPY.inGame.winnerDark
             : outcome === "loss"
-              ? "You lost!"
-              : "Match finished"}
+              ? DARKGAMMON_COPY.inGame.gameOverHeading
+              : DARKGAMMON_COPY.inGame.gameOverHeading}
         </h1>
+        {outcome !== "pending" && (
+          <p className="text-sm font-semibold mb-1">
+            {outcome === "win"
+              ? myColor === "white"
+                ? DARKGAMMON_COPY.inGame.winnerLightSub
+                : DARKGAMMON_COPY.inGame.winnerDarkSub
+              : DARKGAMMON_COPY.inGame.resultDefeatSub}
+          </p>
+        )}
         <p className="text-sm text-muted-foreground">
           {reason === "resign"
-            ? "by resignation"
+            ? DARKGAMMON_COPY.inGame.reasonResignation
             : reason === "decline"
-              ? "double declined"
-              : `bear-off complete`}
+              ? DARKGAMMON_COPY.inGame.reasonDeclined
+              : DARKGAMMON_COPY.inGame.reasonBearOff}
           {cube > 1 && ` · cube ${cube}×`}
         </p>
 
         <div className="grid grid-cols-2 gap-3 w-full text-xs">
           <div className="bg-muted rounded p-3">
             <div className="font-bold text-base">{session.state.off.white}</div>
-            <div className="text-muted-foreground">White borne off</div>
+            <div className="text-muted-foreground">
+              {DARKGAMMON_COPY.sides.white} borne off
+            </div>
           </div>
           <div className="bg-muted rounded p-3">
             <div className="font-bold text-base">{session.state.off.black}</div>
-            <div className="text-muted-foreground">Black borne off</div>
+            <div className="text-muted-foreground">
+              {DARKGAMMON_COPY.sides.black} borne off
+            </div>
           </div>
         </div>
 
@@ -221,15 +248,17 @@ export default function ResultPage() {
           onClick={onExport}
           disabled={exporting}
         >
-          {exporting ? "Preparing…" : "Export as Video"}
+          {exporting
+            ? DARKGAMMON_COPY.battle.videoForging
+            : DARKGAMMON_COPY.battle.exportVideo}
         </Button>
         {downloadUrl && (
           <a
             href={downloadUrl}
-            download={`play-withme-bg-${sessionId}.mp4`}
+            download={`darkgammon-${sessionId}.mp4`}
             className="text-xs underline text-muted-foreground"
           >
-            Download again
+            {DARKGAMMON_COPY.battle.downloadAgain}
           </a>
         )}
 
@@ -238,14 +267,14 @@ export default function ResultPage() {
           className="w-full"
           onClick={() => router.push("/")}
         >
-          New match
+          {DARKGAMMON_COPY.battle.returnHome}
         </Button>
       </div>
 
       {exporting && (
         <div className="absolute inset-0 bg-black/80 z-30 flex flex-col items-center justify-center gap-4 text-white">
           <div className="h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-          <p className="font-medium">Preparing your replay video…</p>
+          <p className="font-medium">{DARKGAMMON_COPY.battle.videoForging}</p>
         </div>
       )}
     </GameFrame>

@@ -93,7 +93,7 @@ export function PublicProfileView({
     return (
       <GameFrame>
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-          <p>Yükleniyor...</p>
+          <p>Loading...</p>
         </div>
       </GameFrame>
     );
@@ -105,7 +105,7 @@ export function PublicProfileView({
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-4">
           <p className="text-destructive font-medium">{error}</p>
           <Button onClick={() => router.push("/")} variant="outline">
-            Ana Sayfaya Dön
+            Return to Home
           </Button>
         </div>
       </GameFrame>
@@ -125,7 +125,7 @@ export function PublicProfileView({
 
         <div className="bg-muted/30 rounded-full p-5 w-full border border-border text-center">
           <p className="italic text-sm font-bold">
-            "{profile.challengeMessage || "Tavla oynamaya ne dersin?"}"
+            "{profile.challengeMessage || "Ready for a battle?"}"
           </p>
         </div>
 
@@ -136,10 +136,10 @@ export function PublicProfileView({
           className="group w-full bg-indigo-500 hover:bg-indigo-400 text-white font-semibold text-lg py-6 shadow-lg shadow-indigo-500/20"
         >
           {sending ? (
-            "Gönderiliyor..."
+            "Sending..."
           ) : (
             <span className="flex items-center justify-center gap-1">
-              <span>Tavla Beni</span>
+              <span>Challenge</span>
               <span className="inline-block rotate-[60deg] transition-transform group-hover:animate-[shake-smile_0.3s_ease-in-out_infinite]">
                 =)
               </span>
@@ -150,7 +150,7 @@ export function PublicProfileView({
         {profile.lastGames && profile.lastGames.length > 0 && (
           <div className="w-full mt-4 flex flex-col gap-2">
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2 text-left">
-              Son Oyunlar
+              Recent Battles
             </h3>
             {/* biome-ignore lint/suspicious/noExplicitAny: complex type */}
             {profile.lastGames.map((game: any) => {

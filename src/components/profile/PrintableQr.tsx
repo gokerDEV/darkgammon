@@ -15,7 +15,7 @@ export function PrintableQr({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const url = `https://tavla.be/ni/!${token}`;
+    const url = `https://darkgammon.com/ni/!${token}`;
     const rawQrSvg = toSvgString(url, {
       ecc: "M",
       render: { moduleSize: 8, margin: 2 },
@@ -32,10 +32,10 @@ export function PrintableQr({
         
         <!-- Logo / Title -->
         <text x="200" y="60" font-family="sans-serif" font-size="32" font-weight="900" fill="#000000" text-anchor="middle">
-          Tavla.be 🎲
+          Darkgammon ⚔️
         </text>
         <text x="200" y="90" font-family="sans-serif" font-size="16" font-weight="600" fill="#666666" text-anchor="middle">
-          Seni tavlaya davet ediyorum!
+          I challenge you to a battle!
         </text>
 
         <!-- QR Code Container -->
@@ -62,7 +62,7 @@ export function PrintableQr({
     const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = blobUrl;
-    link.download = `tavlabe-qr-${handle}.svg`;
+    link.download = `darkgammon-qr-${handle}.svg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -83,7 +83,7 @@ export function PrintableQr({
         size="lg"
         className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold shadow-lg"
       >
-        SVG Olarak İndir (Yazdırmak İçin)
+        Download as SVG (For Printing)
       </Button>
     </div>
   );

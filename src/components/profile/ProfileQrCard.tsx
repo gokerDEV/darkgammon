@@ -1,7 +1,7 @@
 import { toSvgString } from "@goker/qr-code";
 
 export function ProfileQrCard({ token }: { token: string }) {
-  const url = `https://tavla.be/ni/!${token}`;
+  const url = `https://darkgammon.com/ni/!${token}`;
 
   const svgString = toSvgString(url, {
     ecc: "M",
@@ -16,7 +16,7 @@ export function ProfileQrCard({ token }: { token: string }) {
         className="w-48 h-48 sm:w-64 sm:h-64 flex justify-center items-center [&>svg]:w-full [&>svg]:h-full"
       />
       <p className="text-black font-semibold text-center mt-2">
-        Tavla daveti için okutun
+        Scan to challenge me
       </p>
     </div>
   );

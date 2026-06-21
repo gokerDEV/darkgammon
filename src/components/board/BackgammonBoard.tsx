@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import { legalMoves } from "@/lib/games/backgammon/engine";
 import type { BgState, Color, Move } from "@/lib/games/backgammon/types";
 
@@ -121,9 +122,9 @@ function BoardSVG({
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 488.5 581.7"
       role="img"
-      aria-label="Tavla Tahtası"
+      aria-label="Darkgammon Board"
     >
-      <title>Tavla Tahtası</title>
+      <title>Darkgammon Board</title>
       <defs>
         <style>{`.st0{fill:#f9f9fb;}.st1{fill:#efefed;}.st2{fill:#e5e5e7;}.st3{fill:#bcbcbc;}.st4{fill:#d8d4cb;}.st5{fill:none;stroke:#c7c7cc;stroke-width:1.9px;}`}</style>
       </defs>
@@ -648,8 +649,8 @@ export function BackgammonBoard({
 
           <div className="pointer-events-auto flex flex-col items-center gap-2">
             {!state.rolled && (!isMyTurn || state.winner) ? (
-              <span className="px-1 py-2 text-[9px] font-semibold text-[#8e8e93] rotate-90 whitespace-nowrap">
-                bekle
+              <span className="px-1 py-2 text-[9px] font-semibold text-[#8e8e93] rotate-90 whitespace-nowrap uppercase">
+                {DARKGAMMON_COPY.connection.waiting}
               </span>
             ) : null}
           </div>
@@ -697,7 +698,9 @@ export function BackgammonBoard({
           <span
             className={`px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${isMyTurn ? "text-[#0a84ff] animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" : "text-[#8e8e93]"}`}
           >
-            {isMyTurn ? "Senin sıran" : "Rakip"}
+            {isMyTurn
+              ? DARKGAMMON_COPY.inGame.yourTurn
+              : DARKGAMMON_COPY.inGame.opponentsTurn}
           </span>
         </div>
 
@@ -715,7 +718,7 @@ export function BackgammonBoard({
             disabled={!canEndTurn}
             className="rounded-full border border-black/10 bg-white px-4 py-2 text-xs font-bold text-[#1c1c1e] shadow-lg transition hover:bg-[#f2f2f4]"
           >
-            Turu bitir
+            {DARKGAMMON_COPY.inGame.endTurn}
           </button>
         </div>
 
@@ -732,7 +735,9 @@ export function BackgammonBoard({
             }`}
             aria-label="Offer double"
           >
-            <span className="text-[11px] font-bold tracking-wide">KATLA</span>
+            <span className="text-[11px] font-bold tracking-wide uppercase">
+              DOUBLE
+            </span>
             <span
               className={`flex items-center justify-center rounded-full w-5 h-5 text-[10px] font-bold ${canOffer ? "bg-black/5" : "bg-black/5 opacity-40"}`}
             >

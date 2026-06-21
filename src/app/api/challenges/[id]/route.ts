@@ -138,13 +138,11 @@ export async function POST(
         profileId: targetProfile._id,
         type: action === "accept" ? "challenge_accepted" : "challenge_declined",
         title:
-          action === "accept"
-            ? "Meydan Okuma Kabul Edildi!"
-            : "Meydan Okuma Reddedildi",
+          action === "accept" ? "Challenge Accepted!" : "Challenge Declined",
         body:
           action === "accept"
-            ? `${myProfile.displayName} davetinizi kabul etti.`
-            : `${myProfile.displayName} davetinizi reddetti.`,
+            ? `${myProfile.displayName} accepted your challenge.`
+            : `${myProfile.displayName} declined your challenge.`,
         data: {
           challengeId: challenge._id.toString(),
           sessionId: newSessionId,

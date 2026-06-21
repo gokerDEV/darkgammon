@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     if (fromProfileId.toString() === toProfileId) {
       return NextResponse.json(
-        { error: "Kendinize meydan okuyamazsınız" },
+        { error: "You cannot challenge yourself" },
         { status: 400 },
       );
     }
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     });
     if (recent)
       return NextResponse.json(
-        { error: "Aynı kişiye arka arkaya istek atamazsınız. 1 dk bekleyin." },
+        { error: "You cannot spam challenges. Wait 1 min." },
         { status: 429 },
       );
 
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     });
     if (countToday >= 3)
       return NextResponse.json(
-        { error: "Gün içinde aynı kişiye en fazla 3 istek gönderebilirsiniz." },
+        { error: "You can send up to 3 challenges per day to the same user." },
         { status: 429 },
       );
 
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     if (countPendingSent >= maxPendingSent) {
       return NextResponse.json(
         {
-          error: `Maksimum bekleyen istek sınırına ulaştınız. (Limit: ${maxPendingSent})`,
+          error: `Maximum pending challenges reached. (Limit: ${maxPendingSent})`,
         },
         { status: 429 },
       );
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
       .findOne({ _id: new ObjectId(toProfileId) });
     if (!targetProfile)
       return NextResponse.json(
-        { error: "Hedef kullanıcı bulunamadı" },
+        { error: "Target user not found" },
         { status: 404 },
       );
 
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
       });
     if (countPendingReceived >= maxPendingReceived) {
       return NextResponse.json(
-        { error: "Karşı tarafın bekleyen istek kutusu dolu." },
+        { error: "Target user has too many pending challenges." },
         { status: 429 },
       );
     }
@@ -116,8 +116,8 @@ export async function POST(req: NextRequest) {
         userId: targetProfile.userId,
         profileId: targetProfile._id,
         type: "challenge_received",
-        title: "Yeni Tavla Daveti",
-        body: `${myProfile.displayName} seni tavlaya davet ediyor!`,
+        title: "New Battle Challenge",
+        body: `${myProfile.displayName} is challenging you to a battle!`,
         data: { challengeId: challengeId.toString(), fromProfile: myProfile },
         createdAt: new Date(),
         readAt: null,

@@ -27,12 +27,12 @@ export function PushNotificationManager() {
       if (p === "granted") {
         await registerServiceWorkerAndGetToken();
       } else {
-        toast.error("Bildirim izni reddedildi.");
+        toast.error("Notification permission denied.");
       }
     } catch (e) {
       const err = e as Error;
       console.error(err);
-      toast.error("İzin istenirken hata oluştu.");
+      toast.error("Error requesting permission.");
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export function PushNotificationManager() {
 
       const messaging = await getMessagingInstance();
       if (!messaging) {
-        toast.error("Bildirimler bu tarayıcıda desteklenmiyor.");
+        toast.error("Notifications are not supported in this browser.");
         return;
       }
 
@@ -71,17 +71,17 @@ export function PushNotificationManager() {
         });
 
         if (res.ok) {
-          toast.success("Bildirimler başarıyla açıldı!");
+          toast.success("Notifications enabled successfully!");
         } else {
-          toast.error("Token sunucuya kaydedilemedi.");
+          toast.error("Failed to save token to server.");
         }
       } else {
-        toast.error("Token alınamadı.");
+        toast.error("Failed to retrieve token.");
       }
     } catch (e) {
       const err = e as Error;
       console.error(err);
-      toast.error("Service worker kaydı veya token alımı başarısız.");
+      toast.error("Service worker registration or token retrieval failed.");
     }
   };
 
@@ -89,7 +89,7 @@ export function PushNotificationManager() {
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground p-4 bg-muted/30 rounded-xl border border-border">
         <BellOff size={16} />
-        Bildirim izni tarayıcıdan engellenmiş.
+        Notification permission blocked by browser.
       </div>
     );
   }
@@ -98,7 +98,7 @@ export function PushNotificationManager() {
     return (
       <div className="flex items-center gap-2 text-sm text-green-600 p-4 bg-green-500/10 rounded-xl border border-green-500/20">
         <Bell size={16} />
-        Bildirimler Açık
+        Notifications Enabled
       </div>
     );
   }
@@ -111,7 +111,7 @@ export function PushNotificationManager() {
       className="w-full py-6 flex items-center justify-center gap-2"
     >
       {loading ? <Loader2 className="animate-spin" /> : <Bell size={18} />}
-      Meydan Okuma Bildirimlerini Aç
+      Enable Challenge Notifications
     </Button>
   );
 }

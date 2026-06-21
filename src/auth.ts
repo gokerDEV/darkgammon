@@ -1,8 +1,8 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { importPKCS8, SignJWT } from "jose";
 import NextAuth from "next-auth";
 import Apple from "next-auth/providers/apple";
 import Google from "next-auth/providers/google";
-import { SignJWT, importPKCS8 } from "jose";
 import clientPromise from "./lib/db/mongodb";
 
 async function getAppleClientSecret() {

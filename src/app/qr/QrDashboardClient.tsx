@@ -57,10 +57,10 @@ export function QrDashboardClient({
   return (
     <div className="flex flex-col gap-8 w-full max-w-md">
       <div className="flex flex-col items-center gap-4 text-center">
-        <h2 className="text-2xl font-bold text-white">Davet QR Kodun</h2>
+        <h2 className="text-2xl font-bold text-white">Your Battle QR Code</h2>
         <p className="text-white/60 text-sm">
-          Bu QR kodu fiziksel olarak bastırabilir veya dijital ortamda
-          paylaşabilirsin. Okutan kişiler doğrudan sana meydan okuyacaktır!
+          You can print this QR code or share it digitally. Anyone who scans it
+          will directly challenge you to a battle!
         </p>
       </div>
 
@@ -68,10 +68,12 @@ export function QrDashboardClient({
 
       <div className="border-t border-white/10 pt-6 mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
-          <h3 className="font-bold text-white text-lg">Güvenlik & Yenileme</h3>
+          <h3 className="font-bold text-white text-lg">
+            Security & Regeneration
+          </h3>
           <p className="text-sm text-white/50">
-            Eğer mevcut QR kodunun başkalarının eline geçtiğini düşünüyorsan
-            iptal edip yenisini oluşturabilirsin.
+            If you think your QR code has fallen into the wrong hands, you can
+            invalidate it and generate a new one.
           </p>
         </div>
 
@@ -82,29 +84,28 @@ export function QrDashboardClient({
               disabled={loading}
               className="w-full bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 border border-red-500/30"
             >
-              {loading ? "Yenileniyor..." : "Yeni QR Üret (Eskisini İptal Et)"}
+              {loading ? "Regenerating..." : "Regenerate QR (Invalidate Old)"}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-neutral-900 border-white/10 text-white">
             <AlertDialogHeader>
               <AlertDialogTitle>
-                QR Kodunu Yenilemek İstediğine Emin misin?
+                Are You Sure You Want to Regenerate?
               </AlertDialogTitle>
               <AlertDialogDescription className="text-white/70">
-                Eski QR kodunuz tamamen geçersiz olacaktır. Önceden
-                paylaştığınız veya yazdırdığınız eski kodlar artık
-                çalışmayacaktır. Bu işlem geri alınamaz.
+                Your old QR code will become invalid. Any previously shared or
+                printed codes will no longer work. This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel className="bg-white/10 hover:bg-white/20 text-white border-0">
-                İptal
+                Cancel
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleRegenerate}
                 className="bg-red-500 hover:bg-red-600 text-white"
               >
-                Evet, Yenile
+                Yes, Regenerate
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -116,7 +117,7 @@ export function QrDashboardClient({
           variant="ghost"
           className="w-full text-white/50 hover:text-white hover:bg-white/10"
         >
-          Profile Geri Dön
+          Back to Profile
         </Button>
       </Link>
     </div>

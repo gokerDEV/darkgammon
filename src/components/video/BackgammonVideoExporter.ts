@@ -43,7 +43,7 @@ function drawHeader(ctx: CanvasRenderingContext2D) {
   ctx.font = "bold 48px Inter, system-ui, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-  ctx.fillText("tavla.be", 60, 60);
+  ctx.fillText("Darkgammon", 60, 60);
   ctx.fillStyle = "rgba(255,200,120,0.7)";
   ctx.font = "500 36px Inter, system-ui, sans-serif";
   ctx.fillText("", 360, 72);
@@ -76,8 +76,8 @@ function drawAvatar(
 }
 
 function drawPlayers(ctx: CanvasRenderingContext2D, session: BgSession) {
-  const hostName = session.host.nickname || "Misafir";
-  const playerName = session.player?.nickname || "Misafir";
+  const hostName = session.host.nickname || "Guest";
+  const playerName = session.player?.nickname || "Guest";
   drawAvatar(
     ctx,
     hostName[0].toUpperCase(),
@@ -85,7 +85,7 @@ function drawPlayers(ctx: CanvasRenderingContext2D, session: BgSession) {
     230,
     270,
     "#e5e7eb",
-    "WHITE",
+    "LIGHT",
   );
   ctx.fillStyle = "rgba(255,255,255,0.7)";
   ctx.font = "700 56px Inter, system-ui, sans-serif";
@@ -99,7 +99,7 @@ function drawPlayers(ctx: CanvasRenderingContext2D, session: BgSession) {
     W - 230,
     270,
     "#1f2937",
-    "BLACK",
+    "DARK",
   );
 }
 
@@ -287,10 +287,10 @@ function drawEndScreen(ctx: CanvasRenderingContext2D, alpha: number) {
     ctx.font = "bold 120px Inter, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("tavla.be", W / 2, H / 2 - 60);
+    ctx.fillText("Darkgammon", W / 2, H / 2 - 60);
     ctx.font = "500 48px Inter, system-ui, sans-serif";
     ctx.fillStyle = "rgba(255,200,120,0.85)";
-    ctx.fillText("Tavla beni =)", W / 2, H / 2 + 40);
+    ctx.fillText("Light vs Dark", W / 2, H / 2 + 40);
   }
 }
 

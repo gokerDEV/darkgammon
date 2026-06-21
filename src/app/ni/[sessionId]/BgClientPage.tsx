@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { WinnerProgressBar } from "@/components/WinnerProgressBar";
+import { DARKGAMMON_COPY } from "@/lib/copy/darkgammon";
 import {
   acceptDouble,
   advantage,
@@ -171,8 +172,8 @@ export default function BgPage() {
         };
         setPeerLastSeen(Date.now());
         // In Phase 4, server updates DB when player joins and broadcasts updated session.
-        // So client just logs or shows a toast.
-        toast.success(`${hello.nickname} katıldı`);
+        // client just logs or shows a toast.
+        toast.success(DARKGAMMON_COPY.connection.joined(hello.nickname));
         sfx.join();
       },
       "state:update": (data) => {
@@ -194,7 +195,8 @@ export default function BgPage() {
         const p = data as { from: string; nickname?: string };
         if (p.from === localUserId) return;
         setPeerLastSeen(null);
-        if (p.nickname) toast.warning(`${p.nickname} bağlantıyı kesti`);
+        if (p.nickname)
+          toast.warning(DARKGAMMON_COPY.connection.left(p.nickname));
         sfx.leave();
       },
     },
@@ -259,10 +261,10 @@ export default function BgPage() {
     }
     if (prevPeerConnectedRef.current && !connected) {
       sfx.disconnect();
-      toast.warning("Bağlantı koptu");
+      toast.warning(DARKGAMMON_COPY.connection.lost);
     } else if (!prevPeerConnectedRef.current && connected) {
       sfx.reconnect();
-      toast.success("Yeniden bağlanıldı");
+      toast.success(DARKGAMMON_COPY.connection.restored);
     }
     prevPeerConnectedRef.current = connected;
   }, [peerStatus, session?.player]);
@@ -281,10 +283,10 @@ export default function BgPage() {
     const mine = myColor && session.state.winner === myColor;
     if (mine) {
       sfx.win();
-      toast.success("Kazandın!");
+      toast.success(DARKGAMMON_COPY.inGame.victory);
     } else {
       sfx.lose();
-      toast.error("Kaybettin");
+      toast.error(DARKGAMMON_COPY.inGame.defeat);
     }
     const t = window.setTimeout(() => {
       router.push(`/replay?s=${sessionId}`);
@@ -444,51 +446,57 @@ export default function BgPage() {
     });
   }
 
-  if (!ready || !loaded) return <CenterMessage>Yükleniyor…</CenterMessage>;
+  if (!ready || !loaded)
+    return <CenterMessage>{DARKGAMMON_COPY.connection.waiting}…</CenterMessage>;
 
-  if (!isHost && !session) return <CenterMessage>Oda aranıyor…</CenterMessage>;
+  if (!isHost && !session)
+    return <CenterMessage>{DARKGAMMON_COPY.connection.waiting}…</CenterMessage>;
 
   if (role === "open" && !isHost) {
     return (
       <GameFrame>
         <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6 w-full max-w-sm mx-auto">
           <div className="text-center">
-            <h2 className="text-2xl font-bold">Maça katıl</h2>
+            <h2 className="text-2xl font-bold">
+              {DARKGAMMON_COPY.battle.join}
+            </h2>
             {session && (
               <p className="text-muted-foreground text-sm mt-1">
                 <span className="font-semibold text-foreground">
                   {session.host.nickname}
                 </span>{" "}
-                seni tavla oynamaya davet etti!
+                is summoning you to a battle!
               </p>
             )}
           </div>
 
           <div className="bg-muted/30 rounded-2xl p-5 flex flex-col gap-4 border border-border w-full">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="nick">Kullanıcı Adı</Label>
+              <Label htmlFor="nick">Display Name</Label>
               <Input
                 id="nick"
                 value={draftName}
                 onChange={(e) => setDraftName(e.target.value)}
                 maxLength={24}
-                placeholder="Kullanıcı adınız"
+                placeholder="Wanderer"
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="challengeMsg">Meydan Okuma Mesajı</Label>
+              <Label htmlFor="challengeMsg">
+                {DARKGAMMON_COPY.messages.challengeTitle}
+              </Label>
               <Input
                 id="challengeMsg"
                 value={challengeMsg}
                 onChange={(e) => setChallengeMsg(e.target.value)}
-                placeholder="Kazandığında gösterilecek mesaj"
+                placeholder={DARKGAMMON_COPY.messages.challengePlaceholder}
                 maxLength={100}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="giphyUrl">Zafer Giphy URL'si</Label>
+              <Label htmlFor="giphyUrl">Victory Giphy URL</Label>
               <Input
                 id="giphyUrl"
                 value={giphyUrl}
@@ -517,16 +525,16 @@ export default function BgPage() {
                   }),
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Katılamadı");
+                if (!res.ok) throw new Error(data.error || "Failed to join");
                 // State will be updated via Pusher state:update
               } catch (e) {
                 const err = e as Error;
-                toast.error(err.message || "Hata oluştu");
+                toast.error(err.message || "An error occurred");
                 setIsJoining(false);
               }
             }}
           >
-            {isJoining ? "Bağlanıyor..." : "Maça Katıl"}
+            {isJoining ? "Joining..." : DARKGAMMON_COPY.battle.join}
           </Button>
           <div className="mt-4 w-full flex justify-center">
             {/* 300x300 Large Square Ad */}
@@ -545,33 +553,40 @@ export default function BgPage() {
       <GameFrame>
         <GameHeader
           whitePlayer={
-            session?.host.nickname || session?.host.displayName || "Host"
+            session?.host.nickname ||
+            session?.host.displayName ||
+            DARKGAMMON_COPY.inGame.guest
           }
           whiteAvatarUrl={session?.host.avatarUrl}
           whiteStatus="connected"
           blackPlayer={
             session?.player?.nickname ||
             session?.player?.displayName ||
-            "Player"
+            DARKGAMMON_COPY.inGame.guest
           }
           blackAvatarUrl={session?.player?.avatarUrl}
           blackStatus="connected"
           onExit={() => router.push("/")}
         />
         <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center">
-          <h2 className="text-xl font-semibold">Oyun zaten devam ediyor</h2>
+          <h2 className="text-xl font-semibold">
+            {DARKGAMMON_COPY.battle.full}
+          </h2>
           {session && (
             <p className="text-muted-foreground text-sm">
               {session.host.nickname} vs {session.player?.nickname ?? "—"}
             </p>
           )}
-          <Button onClick={() => router.push("/")}>Kendi maçını başlat</Button>
+          <Button onClick={() => router.push("/")}>
+            {DARKGAMMON_COPY.battle.create}
+          </Button>
         </div>
       </GameFrame>
     );
   }
 
-  if (!session) return <CenterMessage>Yükleniyor…</CenterMessage>;
+  if (!session)
+    return <CenterMessage>{DARKGAMMON_COPY.connection.waiting}…</CenterMessage>;
 
   const waiting = !session.player;
   const opponentOfferedToMe =
@@ -583,12 +598,16 @@ export default function BgPage() {
     <GameFrame>
       <GameHeader
         whitePlayer={
-          session.host.nickname || session.host.displayName || "Misafir"
+          session.host.nickname ||
+          session.host.displayName ||
+          DARKGAMMON_COPY.inGame.guest
         }
         whiteAvatarUrl={session.host.avatarUrl}
         whiteStatus={hostStatus}
         blackPlayer={
-          session.player?.nickname || session.player?.displayName || "Misafir"
+          session.player?.nickname ||
+          session.player?.displayName ||
+          DARKGAMMON_COPY.inGame.guest
         }
         blackAvatarUrl={session.player?.avatarUrl}
         blackStatus={playerStatus}
@@ -610,7 +629,7 @@ export default function BgPage() {
         {waiting && isHost ? (
           <div className="w-full max-w-sm flex flex-col gap-3 items-center px-4 mt-6">
             <p className="text-sm text-muted-foreground text-center">
-              Arkadaşını davet etmek için bu bağlantıyı paylaş
+              {DARKGAMMON_COPY.battle.shareLink}
             </p>
             <div className="w-full flex gap-2">
               <Input readOnly value={inviteUrl} className="text-xs" />
@@ -628,7 +647,7 @@ export default function BgPage() {
               </Button>
             </div>
             <p className="text-[11px] text-muted-foreground text-center">
-              Bu sekmeyi açık tut — kapatırsan maç biter.
+              Keep this tab open — closing it may forfeit the battle.
             </p>
 
             <div className="mt-4 w-full flex justify-center">
@@ -659,19 +678,20 @@ export default function BgPage() {
           <div className="mt-4 flex flex-col items-center gap-3">
             <p className="text-xs text-muted-foreground text-center">
               {session.status === "finished"
-                ? "Oyun bitti"
+                ? DARKGAMMON_COPY.inGame.gameOverHeading
                 : isMyTurn
                   ? session.state.rolled
-                    ? "Senin sıran — oyna"
-                    : "Senin sıran — zar at veya katla"
-                  : "Rakibin sırası"}
+                    ? `${DARKGAMMON_COPY.inGame.yourTurn} — Play`
+                    : `${DARKGAMMON_COPY.inGame.yourTurn} — ${DARKGAMMON_COPY.inGame.rollDice}`
+                  : DARKGAMMON_COPY.inGame.opponentsTurn}
             </p>
             {session.status === "finished" && (
               <Button
                 onClick={() => router.push(`/replay?s=${sessionId}`)}
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-2 rounded-full shadow-lg"
               >
-                <Download className="w-4 h-4 mr-2" /> Tekrar Videosunu İndir
+                <Download className="w-4 h-4 mr-2" />{" "}
+                {DARKGAMMON_COPY.battle.exportVideo}
               </Button>
             )}
           </div>
@@ -687,10 +707,11 @@ export default function BgPage() {
       {opponentOfferedToMe && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 p-6">
           <div className="bg-background rounded-xl p-5 w-full max-w-xs text-center shadow-2xl">
-            <h3 className="text-lg font-semibold">Katlama teklif edildi</h3>
+            <h3 className="text-lg font-semibold">Double Offered</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Rakip bahsi {session.state.cube.value * 2} katına çıkardı. Kabul
-              et veya {session.state.cube.value} kaybederek pes et?
+              The opposing side offered a double to{" "}
+              {session.state.cube.value * 2}. Accept, or decline and lose{" "}
+              {session.state.cube.value}?
             </p>
             <div className="mt-4 flex gap-2">
               <Button
@@ -698,10 +719,10 @@ export default function BgPage() {
                 className="flex-1"
                 onClick={handleDeclineDouble}
               >
-                Reddet (Kaybet)
+                {DARKGAMMON_COPY.inGame.declineDouble}
               </Button>
               <Button className="flex-1" onClick={handleAcceptDouble}>
-                Kabul Et
+                {DARKGAMMON_COPY.inGame.acceptDouble}
               </Button>
             </div>
           </div>
@@ -724,7 +745,7 @@ function CenterMessage({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-4">
         <p className="text-lg font-medium">{children}</p>
         <Button onClick={() => router.push("/")} variant="outline">
-          Ana Sayfaya Dön
+          {DARKGAMMON_COPY.battle.returnHome}
         </Button>
 
         <div className="mt-6 w-full flex justify-center">
