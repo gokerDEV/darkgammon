@@ -30,13 +30,14 @@ Create a `.env.local` file in the root directory and configure the necessary var
 
 Tavla.be uses NextAuth.js (Auth.js) for handling authentications. To ensure OAuth flows (especially Apple) work properly, you need to set up the client secrets correctly.
 
-**Generating Apple Client Secret:**
-Unlike Google OAuth, Apple requires a dynamically generated JWT as the client secret. Run the following script to generate it using your private key:
+**Apple Sign-In Setup:**
+NextAuth v5 (Auth.js) automatically generates the required client secret on the fly if you provide the proper credentials. You do not need to manually generate or manage a static `APPLE_CLIENT_SECRET`.
 
-```bash
-bun run scripts/generate-apple-secret.ts
-```
-> **Note:** Make sure `APPLE_TEAM_ID`, `APPLE_CLIENT_ID`, `APPLE_KEY_ID`, and `APPLE_PRIVATE_KEY` are properly defined in your `.env.local` before running the script. Once generated, add the output to `APPLE_CLIENT_SECRET` in your `.env.local`.
+Make sure the following variables are defined in your `.env.local` (as explained in `APPLE.md`):
+- `APPLE_CLIENT_ID`
+- `APPLE_TEAM_ID`
+- `APPLE_KEY_ID`
+- `APPLE_PRIVATE_KEY`
 
 ### Local Development with HTTPS (Required for OAuth)
 

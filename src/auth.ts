@@ -2,7 +2,31 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth from "next-auth";
 import Apple from "next-auth/providers/apple";
 import Google from "next-auth/providers/google";
+import { SignJWT, importPKCS8 } from "jose";
 import clientPromise from "./lib/db/mongodb";
+
+async function getAppleClientSecret() {
+  const privateKey = process.env.APPLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const teamId = process.env.APPLE_TEAM_ID;
+  const keyId = process.env.APPLE_KEY_ID;
+  const clientId = process.env.APPLE_CLIENT_ID;
+
+  if (!privateKey || !teamId || !keyId || !clientId) {
+    return process.env.AUTH_APPLE_SECRET || "";
+  }
+
+  const key = await importPKCS8(privateKey, "ES256");
+  return new SignJWT({})
+    .setAudience("https://appleid.apple.com")
+    .setIssuer(teamId)
+    .setIssuedAt()
+    .setExpirationTime("180d")
+    .setSubject(clientId)
+    .setProtectedHeader({ alg: "ES256", kid: keyId })
+    .sign(key);
+}
+
+const appleSecret = await getAppleClientSecret();
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -14,11 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Apple({
       clientId: process.env.APPLE_CLIENT_ID,
-      clientSecret: process.env.APPLE_CLIENT_SECRET,
-      // For Apple, you typically need to handle the private key generation and pass it as the secret,
-      // but next-auth/providers/apple can handle it if APPLE_CLIENT_SECRET is a generated JWT.
-      // Or you can configure NextAuth to generate it using APPLE_TEAM_ID, APPLE_PRIVATE_KEY, APPLE_KEY_ID, etc.
-      // NextAuth v5 supports passing these directly or via env vars.
+      clientSecret: appleSecret,
     }),
   ],
   callbacks: {
